@@ -1,0 +1,9 @@
+This file as well as other json files can be maximum of 20 kB.
+TWA integer only 20 - 180; TWS integer only 4 - 35; STW is real and must be like 5.0, never just 5
+[TWS, [[TWA, STW], [TWA, STW], ...]],
+...
+...
+
+It MUST be sorted by key in both dimensions.
+
+Do not use values less than 1. It will be ignored - considered 0;

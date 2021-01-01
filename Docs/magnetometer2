@@ -1,0 +1,62 @@
+float CalculateHeadingTiltCompensated(MagnetometerScaled mag, AccelerometerScaled acc)
+{
+  // We are swapping the accelerometers axis as they are opposite to the compass the way we have them mounted.
+  // We are swapping the signs axis as they are opposite.
+  // Configure this for your setup.
+  float accX = -acc.YAxis;
+  float accY = -acc.XAxis;
+
+  float rollRadians = asin(accY);
+  float pitchRadians = asin(accX);
+
+  // We cannot correct for tilt over 40 degrees with this algorthem, if the board is tilted as such, return 0.
+  if(rollRadians > 0.78 || rollRadians < -0.78 || pitchRadians > 0.78 || pitchRadians < -0.78)
+  {
+    return 0;
+  }
+
+  // Some of these are used twice, so rather than computing them twice in the algorithem we precompute them before hand.
+  float cosRoll = cos(rollRadians);
+  float sinRoll = sin(rollRadians);
+  float cosPitch = cos(pitchRadians);
+  float sinPitch = sin(pitchRadians);
+
+  // The tilt compensation algorithem.
+  float Xh = mag.XAxis * cosPitch + mag.ZAxis * sinPitch;
+  float Yh = mag.XAxis * sinRoll * sinPitch + mag.YAxis * cosRoll - mag.ZAxis * sinRoll * cosPitch;
+
+  float heading = atan2(Yh, Xh);
+
+  return heading;
+}
+
+float CalculateHeadingNotTiltCompensated(MagnetometerScaled mag)
+{
+   // Calculate heading when the magnetometer is level, then correct for signs of axis.
+   float heading = atan2(mag.YAxis, mag.XAxis);
+   return heading;
+}
+
+float RadiansToDegrees(float rads)
+{
+  // Correct for when signs are reversed.
+  if(rads < 0)
+    rads += 2*PI;
+
+  // Check for wrap due to addition of declination.
+  if(rads > 2*PI)
+    rads -= 2*PI;
+
+  // Convert radians to degrees for readability.
+  float heading = rads * 180/PI;
+
+  return heading;
+}
+
+void Output(float headingNTC, float headingTC)
+{
+  Serial.print("Heading (Not Compensated):\\t");
+  Serial.print(RadiansToDegrees(headingNTC));
+  Serial.print("\\tHeading (Tilt Compensated):\\t");
+  Serial.println(RadiansToDegrees(headingTC));
+}

@@ -1,0 +1,12 @@
+================general
+n2k_msg_ttl - for how long n2k messages considered to be valid, ms
+================datasources
+n2k_send_intrerval - interval which data will be send to N2K network, ms. PGNs which are "rapid" will be send with 1/10 interval of this value.
+I recommend not to bring it lower than 500. setting it to 500 means rapid coordinates and cog/sog will be sent at 50ms = 20Hz
+================battery
+is set of battery #X specs. Maximum 2 batteries for now
+It has volts and related charge percentage
+charge_v are always decimal e.g. 12.0; charge_p are always integer e.g. 73; maximum number of values is 10
+Important - volts must be sorted ASC, first and last records should be for 0 and 100%
+offset - always decimal e.g. 0.0; It is a constant current drop between the battery and sensor, used for calibration. The value will be added to the voltage, received on sensor.
+charging_v - the voltage which means charging is in progress

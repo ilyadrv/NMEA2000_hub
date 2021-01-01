@@ -1,0 +1,106 @@
+{
+  "test": false,
+  "debug": false,
+  "n2k_msg_ttl": 5000,
+  "n2k_address": 15,
+  "boat_name": "",
+  "page_refresh_speed": 1000,
+  "loop_page_speed": 10,
+  "downwind_awa_alarm": 30,
+  "upwind_awa_alarm": 35,
+  "aws_alarm_min": 5,
+  "aws_alarm_max": 30,
+  "tws_alarm_min": 5,
+  "tws_alarm_max": 30,
+  "gps_time_offset_minutes": 0,
+  "sog_alarm_min": -0.1,
+  "sog_alarm_max": 7.5,
+  "stw_alarm_min": 1.5,
+  "stw_alarm_max": 6.5,
+  "min_move_speed": 1.5,
+  "water_depth_alarm_min": 2.1,
+  "water_temp_alarm_min": 5,
+  "polar_stw_min": 1.5,
+  "stw_to_polar_good": 80,
+  "stw_to_polar_bad": 50,
+  "sog_to_wp_vmg_good": 80,
+  "sog_ignore": 1.0,
+  "depth_offset": 0.0,
+  "gps_warn": true,
+  "depth_warn": true,
+  "xte_alarm": 200,
+  "data_log_speed": 10,
+  "gps_send_to_n2k": true,
+  "battery_send_to_n2k": true,
+  "highlight_local_gps": true,
+  "highlight_local_attitude": true,
+  "highlight_local_heading": true,
+  "battery_low": 20,
+  "high_current_alarm": 2.5,
+  "ameter_shunt_ratio": 1.0,
+  "heel_alarm": 20.0,
+  "heel_offset_device": 0,
+  "heel_offset_n2k": 0,
+  "trim_offset_device": 0,
+  "trim_offset_n2k": 0,
+  "heel_direction_n2k": 1,
+  "heel_direction_device": 1,
+  "trim_direction_n2k": 1,
+  "trim_direction_device": 1,
+  "heading_compass_device_offset_roll": 0.0,
+  "heading_compass_device_offset_pitch": 0.0,
+  "heading_compass_device_offset_yam": 0.0,
+  "heading_compass_calibration_reset": false,
+  "heading_compass_calibrate": true,
+  "battery": [
+      {
+        "charge_v" : [11.8,12.0,12.3,12.6,12.8],
+        "charge_p" : [0,25,50,75,100],
+        "offset": 0.0,
+        "charging_v": 13.0
+      }
+  ],
+  "battery_datasource":{
+    "source": "device",
+    "n2k_priority": 0,
+  },
+  "gps_datasource":{
+    "source": "n2k_device",
+    "n2k_priority": 6,
+    "n2k_send_intrerval": 500
+  },
+  "water_datasource":{
+    "source": "n2k"
+  },
+  "wind_datasource":{
+    "source": "n2k"
+  },
+  "heading_datasource":{
+    "source": "device_n2k",
+    "n2k_priority": 6,
+    "n2k_send_intrerval": 500
+  },
+  "trip_datasource":{
+    "source": "n2k"
+  },
+  "rudder_datasource":{
+    "source": "n2k"
+  },
+  "navigation_datasource":{
+        "source": "n2k"
+  },
+  "attitude_datasource":{
+    "source": "n2k_device",
+    "n2k_priority": 6,
+    "n2k_send_intrerval": 500
+  },
+  "polar_datasource":{
+    "source": "device",
+    "n2k_priority": 0
+  },
+  "env_datasource":{
+    "source": "device",
+    "n2k_priority": 6,
+    "n2k_send_intrerval": 1000
+  }
+}

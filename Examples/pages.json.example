@@ -1,0 +1,20 @@
+{
+  "pages": [
+    ["COORD"],
+    ["AWA","TWA","COORD"],
+    ["AWS","TWS","---", "AWA"],
+    [
+        "AWA","TWA","AWS","TWS","TWD",
+        "SOG","AvgSOG","STW","AvgSTW",
+        "COG","Heading",
+        "WaterDepth",
+        "MaxAws","MaxTws",
+        "COORD"
+    ],
+    ["Heading", "SOG", "COG", "STW", "AWS", "TWS", "MaxAws", "MaxTws", "AWA", "TWA", "TWD", "TripLog", "Log", "WaterTemperature", "WaterDepth"],
+    ["Variation", "Altitude", "AvgSOG", "AvgSTW", "COORD", "RudderPosition", "PolarSTW", "AvgPolarSTW", "BatteryCharge", "BatteryVolt", "BatteryCurrent", "PowerConsumed", "MCOG", "HeadingM"],
+    ["XTE", "WpDistance", "WpETA", "WpBearingT", "WpBearingM", "DestCoord", "WpVMG", "TripTime", "Heel", "Trim", "MaxHeel", "MaxTrim", "---"],
+    ["AirTemp", "Humidity", "Pressure", "---"]
+  ],
+  "loop_exclude":[4,5]
+}
