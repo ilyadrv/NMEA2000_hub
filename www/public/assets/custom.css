@@ -1,0 +1,4 @@
+body{ padding:10px }
+.f10 {font-size:10px !important;}
+.dataTable.compact th, .dataTable.compact td { padding-top: 6px; padding-bottom: 6px;}
+.pagination, .dataTables_info, .dataTables_length {font-size:10px;}
