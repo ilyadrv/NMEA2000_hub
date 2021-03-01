@@ -10,16 +10,17 @@ function getColumnOpts(table) {
     return columns;
 }
 
-$(document).ready(function() {
-    $('#log').DataTable( {
-        "ajax":{url:"example1.json",dataSrc:""},
-        "order": [[ 0, "desc" ]],
-        "columns":  getColumnOpts($('#log')),
-    } );
+function initTable(table, file){
+    $.get(file, function(response) {
+        table.DataTable( {
+             data: $.csv.toObjects(response),
+            "order": [[ 0, "desc" ]],
+            "columns":  getColumnOpts(table),
+        } );
+    });
+}
 
-    $('#debug').DataTable( {
-        "ajax":{url:"example2.json",dataSrc:""},
-        "order": [[ 0, "desc" ]],
-        "columns":  getColumnOpts($('#debug')),
-    } );
+$(document).ready(function() {
+    initTable($('#log'), "example1.csv");
+    initTable($('#debug'), "example2.csv");
 } );
