@@ -7,7 +7,8 @@ protected:
     static cConfig *Config;
 
     static String boat_data_csv_headers(){
-        return String("time, uptime,")
+        //IMPORTANT! no spaces in headers. Or web display will not work.
+        return String("time,uptime,")
             + "lat,lon,sog,cog,mcog,varia,alt,gps_time,gps_src,avg_sog,"
             + "stw,w_depth,w_temp,avg_stw,"
             + "aws,tws,awa,twa,twd,max_aws,max_tws,"
@@ -17,7 +18,7 @@ protected:
             + "bat_volt,bat_cur,pow_used,bat_temp,bat_charge,bat_charging,"
             + "nav_xte,nav_wp_distance,nav_eta,nav_wp_bearing_t,nav_wp_bearing_m,nav_dest_lat,nav_dest_lon,nav_wp_vmg,"
             + "heel,trim,max_heel,max_trim,att_src,"
-            + "air_t, air_h, air_p";
+            + "air_t,air_h,air_p";
     }
 
     static String boat_data_to_csv(){
