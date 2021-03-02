@@ -42,7 +42,7 @@ protected:
     };
     struct tPolarLine{
         int tws = 0, points_num = 0;
-        tPolarPoint points[polar_twa_max - polar_twa_min + 1];
+        tPolarPoint *points;
     };
     struct tPolars{
         tPolarLine lines[polar_tws_max - polar_tws_min + 1];
@@ -126,6 +126,9 @@ protected:
                     polars.lines_num++;
                     polars.lines[line].tws = (int) json_buffer["polars"][line][0];
                     for (int point = 0; point <= polar_twa_max - polar_twa_min; point++){
+                        if (point == 0){
+                            polars.lines[line].points = (tPolarPoint *) malloc((polar_twa_max - polar_twa_min + 1) * sizeof(tPolarPoint));
+                        }
                         if (!json_buffer["polars"][line][1][point][0]){break;} //reach the end of point in line
                         if (json_buffer["polars"][line][1][point][1] > 0.5){ // because this is floats we assuming empty everything less 0.5
                             polars.lines[line].points[point].twa = (int) json_buffer["polars"][line][1][point][0];
