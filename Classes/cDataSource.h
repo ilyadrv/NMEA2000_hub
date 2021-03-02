@@ -3,7 +3,6 @@
 class cDataSource{
 
 protected:
-    cConfig GlobalConfig;
     cConfig::tDataSourceConfig DataSourceConfig;
     bool test = false;
     unsigned long N2kSendTimer = 0, N2kSendRapidTimer = 0, OneSecTimer = 0, TestDataTimer = 0;
@@ -17,10 +16,9 @@ public:
     String Source = ""; // source of received data: n2k | device | n2k_device | device_n2k
 
     //================================== public functions
-    void InitDataSource(cConfig &Config){
-        GlobalConfig = Config;
+    void InitDataSource(){
         SetDataSourceConfig();
-        test = GlobalConfig.test;
+        test = DeviceConfig.test;
         InitHardware();
     }
 
@@ -32,7 +30,7 @@ public:
 
     void RefreshData(){
         if (test){
-            if (TestDataTimer + GlobalConfig.page_refresh_speed < millis()){ //we are using page refresh timer settings to mutate test data rarely so it does not jump like hell
+            if (TestDataTimer + DeviceConfig.page_refresh_speed < millis()){ //we are using page refresh timer settings to mutate test data rarely so it does not jump like hell
                 TestDataTimer = millis();
                 unsigned char _r = MyRandInt(1, 100);
                 if(_r <= 5) { //emulate data loss in 3% of cases and it will last for a few iterations, because next RefreshDataFromTest will arrive only in 40% cases
@@ -101,7 +99,7 @@ protected:
 
 //=====================================================
 //================ to implement =======================
-    virtual void SetDataSourceConfig(){} //e.g. DataSourceConfig = GlobalConfig.battery_config
+    virtual void SetDataSourceConfig(){} //e.g. DataSourceConfig = DeviceConfig.battery_config
     virtual void ResetData(){}
 
     virtual void SendToN2K(){}

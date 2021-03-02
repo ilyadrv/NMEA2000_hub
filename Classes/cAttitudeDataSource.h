@@ -36,7 +36,7 @@ protected:
     }
 
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.attitude_datasource;
+        DataSourceConfig = DeviceConfig.attitude_datasource;
     }
 
     bool RefreshDataFromDevice(){
@@ -71,10 +71,10 @@ protected:
                 _TrimNotSmoothed = N2kFloatNA;
             }
         }
-        Heel = (_Heel + GlobalConfig.heel_offset_device) * GlobalConfig.heel_direction_device;
-        Trim = (_Trim + GlobalConfig.trim_offset_device) * GlobalConfig.trim_direction_device;
-        HeelNotSmoothed = (_HeelNotSmoothed + GlobalConfig.heel_offset_device) * GlobalConfig.heel_direction_device;
-        TrimNotSmoothed = (_TrimNotSmoothed + GlobalConfig.trim_offset_device) * GlobalConfig.trim_direction_device;
+        Heel = (_Heel + DeviceConfig.heel_offset_device) * DeviceConfig.heel_direction_device;
+        Trim = (_Trim + DeviceConfig.trim_offset_device) * DeviceConfig.trim_direction_device;
+        HeelNotSmoothed = (_HeelNotSmoothed + DeviceConfig.heel_offset_device) * DeviceConfig.heel_direction_device;
+        TrimNotSmoothed = (_TrimNotSmoothed + DeviceConfig.trim_offset_device) * DeviceConfig.trim_direction_device;
         return true;
     }
 
@@ -93,8 +93,8 @@ protected:
         double _yaw;
         //pitch <=> trim; roll <=> heel
         if (ParseN2kAttitude(cN2K::Message(127257), _sid, _yaw, Trim, Heel) ) {
-            HeelNotSmoothed = Heel = (Heel * radToDeg + GlobalConfig.heel_offset_n2k) * GlobalConfig.heel_direction_n2k;
-            TrimNotSmoothed = Trim = (Trim * radToDeg + GlobalConfig.trim_offset_n2k) * GlobalConfig.trim_direction_n2k;
+            HeelNotSmoothed = Heel = (Heel * radToDeg + DeviceConfig.heel_offset_n2k) * DeviceConfig.heel_direction_n2k;
+            TrimNotSmoothed = Trim = (Trim * radToDeg + DeviceConfig.trim_offset_n2k) * DeviceConfig.trim_direction_n2k;
             result = true;
         }
         return result;

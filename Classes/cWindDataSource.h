@@ -26,8 +26,8 @@ public:
     String MaxAWSStr(){ return MaxAWSValid() ? String(MaxAWS, 1) : EmptyValue;}
     String MaxTWSStr(){ return MaxTWSValid() ? String(MaxTWS, 1) : EmptyValue;}
 
-    void InitDataSource(cConfig &Config, cGpsDataSource *_gps, cHeadingDataSource *_heading){
-        cDataSource::InitDataSource(Config);
+    void InitDataSource(cGpsDataSource *_gps, cHeadingDataSource *_heading){
+        cDataSource::InitDataSource();
         Gps = _gps;
         Heading = _heading;
     }
@@ -41,7 +41,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.wind_datasource;
+        DataSourceConfig = DeviceConfig.wind_datasource;
     }
 
     void WindFromApparent(){
@@ -51,7 +51,7 @@ protected:
         }
         // Calculate and send TWS/TWA if have adequate SOG and COG
         if (Gps->SOGValid()) {
-            if (Gps->SOG >= GlobalConfig.sog_ignore){
+            if (Gps->SOG >= DeviceConfig.sog_ignore){
                 x = AWS * cos(AWA/radToDeg);
                 y = AWS * sin(AWA/radToDeg);
                 TWA = Degree360to180(NormalizeDegree(atan2(y, x - Gps->SOG) * radToDeg));

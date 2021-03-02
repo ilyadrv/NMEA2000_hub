@@ -42,7 +42,7 @@ public:
 
     long Time(){
         return TimeValid()
-            ? DaysSince1970 * 3600 * 24 + SecondsSinceMidnight + GlobalConfig.gps_time_offset_minutes * 60
+            ? DaysSince1970 * 3600 * 24 + SecondsSinceMidnight + DeviceConfig.gps_time_offset_minutes * 60
             : 0;
     }
 
@@ -93,7 +93,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.gps_datasource;
+        DataSourceConfig = DeviceConfig.gps_datasource;
     }
 
     bool RefreshDataFromN2k(){
@@ -181,12 +181,12 @@ protected:
             if (PositionValid(testData)){ //from last test data
                 Latitude=testData.Latitude;
                 Longitude=testData.Longitude;
-                _time = testData.Time - GlobalConfig.gps_time_offset_minutes * 60;
+                _time = testData.Time - DeviceConfig.gps_time_offset_minutes * 60;
             }
             else if(PositionValid(_LastShutdownPosition)){
                 Latitude=_LastShutdownPosition.Latitude;
                 Longitude=_LastShutdownPosition.Longitude;
-                _time = _LastShutdownPosition.Time - GlobalConfig.gps_time_offset_minutes * 60;
+                _time = _LastShutdownPosition.Time - DeviceConfig.gps_time_offset_minutes * 60;
             }
             else{ //from scratch
                 Latitude= 52.514903;
@@ -195,7 +195,7 @@ protected:
             }
         }
         else{
-            _time = DeviceState.Time - GlobalConfig.gps_time_offset_minutes * 60;
+            _time = DeviceState.Time - DeviceConfig.gps_time_offset_minutes * 60;
         }
         Latitude +=  0.000021;
         Longitude += 0.000010;
@@ -242,14 +242,14 @@ protected:
     }
 
     void ProcessData(){
-        if (SOG < GlobalConfig.sog_ignore){
+        if (SOG < DeviceConfig.sog_ignore){
             COG = N2kDoubleNA;
             MCOG = N2kDoubleNA;
         }
     }
 
     void OneSecProcessData(){
-        if (SOGValid() && SOG > GlobalConfig.min_move_speed){
+        if (SOGValid() && SOG > DeviceConfig.min_move_speed){
             AvgSOG = (_AvgSOGPoints == 0)
                 ? AvgSOG = SOG
                 : (AvgSOG * _AvgSOGPoints + SOG) / (_AvgSOGPoints + 1);

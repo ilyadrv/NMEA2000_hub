@@ -22,7 +22,7 @@ public:
     bool TemperatureValid(){return TemperatureValid(Temperature);}
     bool ChargeValid(){return (0 <= Charge && Charge <= 100 && VoltageValid());}
     bool Charging(){return (Voltage >= ChargeTable.chargingVoltage);}
-    bool Low(){return (Charge <= GlobalConfig.battery_low);}
+    bool Low(){return (Charge <= DeviceConfig.battery_low);}
     bool PowerConsumedValid(){return (0.0001 < PowerConsumed && PowerConsumed < 120000);} //if we have more than 10 000A/h used
 
     String VoltageStr(){ return VoltageValid() ? String(Voltage, 2) : EmptyValue;}
@@ -31,11 +31,11 @@ public:
     String ChargeStr(){ return ChargeValid() ? String(Charge) : EmptyValue;}
     String PowerConsumedStr(){ return PowerConsumedValid() ? String(PowerConsumed,1) : EmptyValue;}
 
-    void InitDataSource(cConfig &Config, unsigned char BatteryInstance){
-        cDataSource::InitDataSource(Config);
+    void InitDataSource(unsigned char BatteryInstance){
+        cDataSource::InitDataSource();
         Instance = BatteryInstance;
         if (BatteryInstance == 1 || BatteryInstance == 2){
-            ChargeTable = GlobalConfig.batteries[BatteryInstance - 1];
+            ChargeTable = DeviceConfig.batteries[BatteryInstance - 1];
         }
     }
 
@@ -78,7 +78,7 @@ protected:
 
 //================================= FROM BASIC CLASS
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.battery_datasource;
+        DataSourceConfig = DeviceConfig.battery_datasource;
     }
 
     void SendToN2K(){
@@ -95,7 +95,7 @@ protected:
             // abs value to protect from reverse polarity
             // Converting to A and apply shunt ratio
             if (i2cDeviceAvailable(a_address)){
-                _Current = abs(ammeter.getCurrent()) * GlobalConfig.ameter_shunt_ratio / 1000;
+                _Current = abs(ammeter.getCurrent()) * DeviceConfig.ameter_shunt_ratio / 1000;
                 ASmoother.Smooth(&_Current);
             }
             else{
@@ -129,7 +129,7 @@ protected:
         Current = 2 + MyRandDouble(-1.0, 1.0);
         Temperature = 35 + MyRandDouble(-5.0, 5.0);
         if (CurrentValid() && VoltageValid()){
-            PowerConsumed += Current * Voltage / (3600 * 1000 / GlobalConfig.page_refresh_speed) * (100/60); // because test data mutates once per page refresh in 60% cases
+            PowerConsumed += Current * Voltage / (3600 * 1000 / DeviceConfig.page_refresh_speed) * (100/60); // because test data mutates once per page refresh in 60% cases
         }
     }
 

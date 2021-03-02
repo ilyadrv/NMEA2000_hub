@@ -107,7 +107,7 @@ void setup() {
     load_state(); // recover last shutdown state
 
     //Init boat data
-    BoatData.Init(DeviceConfig);
+    BoatData.Init();
 
     //Init logs
     cLog::Init(&BoatData, &DeviceConfig);

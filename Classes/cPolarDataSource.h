@@ -8,8 +8,8 @@ public:
         BoatToPolar = N2kUInt8NA, //percentage relation boat speed tp polar predict
         BoatToPolarAvg = N2kUInt8NA;
 
-    bool STWValid(){ return (GlobalConfig.polar_stw_min < STW && STW < 100);}
-    bool AvgSTWValid(){ return (GlobalConfig.polar_stw_min < AvgSTW && AvgSTW < 100);}
+    bool STWValid(){ return (DeviceConfig.polar_stw_min < STW && STW < 100);}
+    bool AvgSTWValid(){ return (DeviceConfig.polar_stw_min < AvgSTW && AvgSTW < 100);}
     bool BoatToPolarValid(){ return (0 < BoatToPolar && BoatToPolar < 200);} //if we are 2 times faster polars that's bad STW or bad polars
     bool BoatToPolarAvgValid(){ return (0 < BoatToPolarAvg && BoatToPolarAvg < 200);}
 
@@ -18,8 +18,8 @@ public:
     String BoatToPolarStr(){ return BoatToPolarValid() ? String(BoatToPolar) : EmptyValue;}
     String BoatToPolarAvgStr(){ return BoatToPolarAvgValid() ? String(BoatToPolarAvg) : EmptyValue;}
 
-    void InitDataSource(cConfig &Config, cWindDataSource *_wind, cWaterDataSource *_water){
-        cDataSource::InitDataSource(Config);
+    void InitDataSource(cWindDataSource *_wind, cWaterDataSource *_water){
+        cDataSource::InitDataSource();
         Wind = _wind;
         Water = _water;
         LoadPolars();
@@ -150,7 +150,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.polar_datasource;
+        DataSourceConfig = DeviceConfig.polar_datasource;
     }
 
     bool RefreshDataFromDevice(){

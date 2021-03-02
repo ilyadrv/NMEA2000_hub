@@ -13,13 +13,13 @@ public:
     String HeadingMStr(){ return HeadingMValid() ? Degree360String(HeadingM, 0) : EmptyValue;}
     String VariationStr(){ return VariationValid() ? String(Variation, 1) : EmptyValue;}
 
-    void InitDataSource(cConfig &Config, cGpsDataSource *_gps, cAttitudeDataSource *_attitude){
-        cDataSource::InitDataSource(Config);
+    void InitDataSource(cGpsDataSource *_gps, cAttitudeDataSource *_attitude){
+        cDataSource::InitDataSource();
         Gps = _gps;
         Attitude = _attitude;
         
         //load calibration
-        if (GlobalConfig.heading_compass_calibration_reset){
+        if (DeviceConfig.heading_compass_calibration_reset){
             prefs.remove("h.mag_max.x");
             prefs.remove("h.mag_max.y");
             prefs.remove("h.mag_max.z");
@@ -63,7 +63,7 @@ protected:
         _Trim = N2kDoubleNA;
 
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.heading_datasource;
+        DataSourceConfig = DeviceConfig.heading_datasource;
     }
 
     bool RefreshDataFromN2k(){
@@ -142,7 +142,7 @@ protected:
                 _Trim = Attitude->TrimNotSmoothed;
 
                 //auto calibrate
-                if(GlobalConfig.heading_compass_calibrate && value.x && value.y && value.z){
+                if(DeviceConfig.heading_compass_calibrate && value.x && value.y && value.z){
                     if (value.x < mag_min.x){ mag_min.x = value.x; prefs.putFloat("h.mag_min.x", mag_min.x);}
                     if (value.x > mag_max.x){ mag_max.x = value.x; prefs.putFloat("h.mag_max.x", mag_max.x);}
                     if (value.y < mag_min.y){ mag_min.y = value.y; prefs.putFloat("h.mag_min.y", mag_min.y);}
@@ -173,11 +173,11 @@ protected:
                     //tilt compensation - without it it makes no sense
                     //pitch <=> trim; roll <=> heel
                     // also apply magnetic sensor mount position offsets
-                    double r = (_Heel + GlobalConfig.heading_compass_device_offset_roll) / radToDeg; //heel aka roll radians
-                    double p = (_Trim + GlobalConfig.heading_compass_device_offset_pitch) / radToDeg; //trim aka pitch radians
+                    double r = (_Heel + DeviceConfig.heading_compass_device_offset_roll) / radToDeg; //heel aka roll radians
+                    double p = (_Trim + DeviceConfig.heading_compass_device_offset_pitch) / radToDeg; //trim aka pitch radians
                     x = x*cos(p) + z*sin(p);
                     y = x*sin(r)*sin(p) + y*cos(r) - z*sin(r)*cos(p);
-                    _HeadingM = NormalizeDegree(atan2(y, x) * radToDeg + GlobalConfig.heading_compass_device_offset_yam);
+                    _HeadingM = NormalizeDegree(atan2(y, x) * radToDeg + DeviceConfig.heading_compass_device_offset_yam);
                 }
             }
             else{
