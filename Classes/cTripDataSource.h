@@ -39,7 +39,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.trip_datasource;
+        DataSourceConfig = &DeviceConfig.trip_datasource;
     }
 
     bool RefreshDataFromN2k(){

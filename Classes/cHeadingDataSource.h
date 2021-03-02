@@ -63,7 +63,7 @@ protected:
         _Trim = N2kDoubleNA;
 
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.heading_datasource;
+        DataSourceConfig = &DeviceConfig.heading_datasource;
     }
 
     bool RefreshDataFromN2k(){

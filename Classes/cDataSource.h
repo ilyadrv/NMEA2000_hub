@@ -3,7 +3,7 @@
 class cDataSource{
 
 protected:
-    cConfig::tDataSourceConfig DataSourceConfig;
+    cConfig::tDataSourceConfig *DataSourceConfig = (cConfig::tDataSourceConfig *) malloc(sizeof(cConfig::tDataSourceConfig));
     bool test = false;
     unsigned long N2kSendTimer = 0, N2kSendRapidTimer = 0, OneSecTimer = 0, TestDataTimer = 0;
     unsigned char _sid = 0; //Sequence ID - messages of the same SID from one device are grouped together like they were sent in the same time
@@ -26,7 +26,7 @@ public:
     bool SourceValid(){return (Source == "n2k" || Source == "device");}
 
     //check if source was defined in the config
-    bool SourceEnabled(){return (DataSourceConfig.Source == "n2k" || DataSourceConfig.Source == "device" || DataSourceConfig.Source == "n2k_device" || DataSourceConfig.Source == "device_n2k");}
+    bool SourceEnabled(){return (DataSourceConfig->Source == "n2k" || DataSourceConfig->Source == "device" || DataSourceConfig->Source == "n2k_device" || DataSourceConfig->Source == "device_n2k");}
 
     void RefreshData(){
         if (test){
@@ -51,14 +51,14 @@ public:
             Source = "";
             ResetData();
             //N2K priority
-            if (DataSourceConfig.Source == "n2k" || DataSourceConfig.Source == "n2k_device"){
+            if (DataSourceConfig->Source == "n2k" || DataSourceConfig->Source == "n2k_device"){
                 if (RefreshDataFromN2k()) Source = "n2k";
-                else if(DataSourceConfig.Source == "n2k_device" && RefreshDataFromDevice()) Source = "device";
+                else if(DataSourceConfig->Source == "n2k_device" && RefreshDataFromDevice()) Source = "device";
             }
             //Device priority
-            else if (DataSourceConfig.Source == "device" || DataSourceConfig.Source == "device_n2k"){
+            else if (DataSourceConfig->Source == "device" || DataSourceConfig->Source == "device_n2k"){
                 if (RefreshDataFromDevice()) Source = "device";
-                else if(DataSourceConfig.Source == "device_n2k" && RefreshDataFromN2k()) Source = "n2k";
+                else if(DataSourceConfig->Source == "device_n2k" && RefreshDataFromN2k()) Source = "n2k";
             }
         }
         if (SourceValid()){
@@ -73,15 +73,15 @@ public:
     void SendDataToN2K(){
         //if it is in test mode we want to send data to N2K regardless it's source and configuration.
         if(test){
-            DataSourceConfig.N2kSendInterval = 1000;
-            DataSourceConfig.N2kPriority = 6;
+            DataSourceConfig->N2kSendInterval = 1000;
+            DataSourceConfig->N2kPriority = 6;
         }
-        if (DataSourceConfig.N2kPriority > 0 && (Source == "device" || test)){
-            if (N2kSendTimer + DataSourceConfig.N2kSendInterval < millis()){
+        if (DataSourceConfig->N2kPriority > 0 && (Source == "device" || test)){
+            if (N2kSendTimer + DataSourceConfig->N2kSendInterval < millis()){
                 N2kSendTimer = millis();
                 SendToN2K();
             }
-            if (N2kSendRapidTimer + DataSourceConfig.N2kSendInterval/10 < millis()){
+            if (N2kSendRapidTimer + DataSourceConfig->N2kSendInterval/10 < millis()){
                 N2kSendRapidTimer = millis();
                 SendToN2KRapid();
             }
@@ -93,13 +93,13 @@ public:
 
 protected:
     void SendN2KMessage(tN2kMsg N2kMsg){
-        N2kMsg.Priority = DataSourceConfig.N2kPriority;
+        N2kMsg.Priority = DataSourceConfig->N2kPriority;
         NMEA2000.SendMsg(N2kMsg);
     }
 
 //=====================================================
 //================ to implement =======================
-    virtual void SetDataSourceConfig(){} //e.g. DataSourceConfig = DeviceConfig.battery_config
+    virtual void SetDataSourceConfig(){} //e.g. DataSourceConfig = &DeviceConfig.battery_config
     virtual void ResetData(){}
 
     virtual void SendToN2K(){}

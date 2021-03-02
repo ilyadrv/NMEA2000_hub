@@ -36,7 +36,7 @@ protected:
     }
 
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.attitude_datasource;
+        DataSourceConfig = &DeviceConfig.attitude_datasource;
     }
 
     bool RefreshDataFromDevice(){

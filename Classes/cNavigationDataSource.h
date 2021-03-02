@@ -45,7 +45,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.navigation_datasource;
+        DataSourceConfig = &DeviceConfig.navigation_datasource;
     }
 
     bool RefreshDataFromN2k(){

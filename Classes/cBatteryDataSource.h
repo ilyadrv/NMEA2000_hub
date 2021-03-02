@@ -78,7 +78,7 @@ protected:
 
 //================================= FROM BASIC CLASS
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.battery_datasource;
+        DataSourceConfig = &DeviceConfig.battery_datasource;
     }
 
     void SendToN2K(){

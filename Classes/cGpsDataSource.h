@@ -93,7 +93,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.gps_datasource;
+        DataSourceConfig = &DeviceConfig.gps_datasource;
     }
 
     bool RefreshDataFromN2k(){

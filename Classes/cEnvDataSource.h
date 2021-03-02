@@ -28,7 +28,7 @@ protected:
 
 //================================= FROM BASIC CLASS
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.env_datasource;
+        DataSourceConfig = &DeviceConfig.env_datasource;
     }
 
     void SendToN2K(){}

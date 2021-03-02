@@ -150,7 +150,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.polar_datasource;
+        DataSourceConfig = &DeviceConfig.polar_datasource;
     }
 
     bool RefreshDataFromDevice(){

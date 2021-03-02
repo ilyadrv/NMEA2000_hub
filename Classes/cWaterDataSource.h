@@ -22,7 +22,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.water_datasource;
+        DataSourceConfig = &DeviceConfig.water_datasource;
     }
 
     bool RefreshDataFromN2k(){

@@ -10,7 +10,7 @@ public:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.rudder_datasource;
+        DataSourceConfig = &DeviceConfig.rudder_datasource;
     }
 
     bool RefreshDataFromN2k(){

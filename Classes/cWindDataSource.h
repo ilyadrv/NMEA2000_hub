@@ -41,7 +41,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = DeviceConfig.wind_datasource;
+        DataSourceConfig = &DeviceConfig.wind_datasource;
     }
 
     void WindFromApparent(){
