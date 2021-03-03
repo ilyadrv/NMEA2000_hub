@@ -1,10 +1,7 @@
 class cLog{
-protected:
-    static unsigned long timer;  // Time for log writing
-    static String _last_pgns;
-    static long Now;
-    static cBoatData *Data;
-    static cConfig *Config;
+
+public:
+    static String lastBoatData;
 
     static String boat_data_csv_headers(){
         //IMPORTANT! no spaces in headers. Or web display will not work.
@@ -20,6 +17,13 @@ protected:
             + "heel,trim,max_heel,max_trim,att_src,"
             + "air_t,air_h,air_p";
     }
+
+protected:
+    static unsigned long timer;  // Time for log writing
+    static String _last_pgns;
+    static long Now;
+    static cBoatData *Data;
+    static cConfig *Config;
 
     static String boat_data_to_csv(){
         String _result =
@@ -164,7 +168,8 @@ public:
             else{
                 _log_file.println(boat_data_csv_headers()); //csv headers
             }
-            _bytes_written = _log_file.println(boat_data_to_csv());
+            lastBoatData = boat_data_to_csv();
+            _bytes_written = _log_file.println(lastBoatData);
             _log_file.close();
             result = (_bytes_written > 5); //some bytes written?
             log_debug();
@@ -174,6 +179,7 @@ public:
 };
 unsigned long cLog::timer = 0;
 String cLog::_last_pgns = "";
+String cLog::lastBoatData = "";
 long cLog::Now = 0;
 cBoatData *cLog::Data = (cBoatData *) malloc(sizeof(cBoatData));
 cConfig *cLog::Config = (cConfig *) malloc(sizeof(cConfig));
