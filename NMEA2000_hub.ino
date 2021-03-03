@@ -21,6 +21,10 @@
 #include <SPI.h>
 #include <Free_Fonts.h>
 
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <WiFiClient.h>
+
 #include "AMeter/ammeter.cpp"
 #include "VMeter/voltmeter.cpp" //vmeter shares some ameter definitions, because ameter hardware has the  same vmeter chip inside
 #include <TinyGPS++.h>
@@ -35,6 +39,9 @@
 #include "Classes/cDisplay.h"
 #include "Classes/cLog.h"
 #include "States.h"
+
+#include "Web/Parsing.cpp"
+#include "Web/WebServer.cpp"
 
 bool _logoShown = false;
 
@@ -111,6 +118,9 @@ void setup() {
 
     //Init logs
     cLog::Init(&BoatData, &DeviceConfig);
+
+    //init WiFi and web server
+    webServer.startWebServer();
 }
 
 void loop() {
@@ -210,5 +220,10 @@ void loop() {
         if (SD_Present) MainDisplay.LogFileError = !cLog::Log(DeviceState.Time);
         _pseudo_fps = 0;
     }
+
+    webServer.handleClient();
+
     _pseudo_fps++;
 }
+
+
