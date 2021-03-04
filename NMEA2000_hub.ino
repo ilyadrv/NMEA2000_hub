@@ -5,7 +5,7 @@
 #define ESP32_CAN_TX_PIN GPIO_NUM_2
 #define ESP32_CAN_RX_PIN GPIO_NUM_35
 
-// So M5Stack wil include acceleration/Gyro unit
+// So M5Stack will include acceleration/Gyro unit
 #define M5STACK_MPU6886
 
 #include <M5Stack.h>

@@ -74,6 +74,10 @@ public:
     void Refresh(){
         //must go first. This actually updates global var SavedN2kMessages.
         TimeRefreshN2K = millis(); NMEA2000.ParseMessages(); TimeRefreshN2K = millis() - TimeRefreshN2K;
+        if (millis() -  cN2K::lastCollect > 5000){
+            cN2K::lastCollect = millis();
+            cN2K::Init();
+        }
         // actually will parse saved messages; order maters
         TimeRefreshGps = millis(); Gps.RefreshData(); TimeRefreshGps = millis() - TimeRefreshGps;
         TimeRefreshHeading = millis(); Heading.RefreshData(); TimeRefreshHeading = millis() - TimeRefreshHeading;
