@@ -76,6 +76,18 @@ protected:
     cSmoother VSmoother = cSmoother(10, 100); //this means 10 sec avg because reading is 1000ms
     cSmoother ASmoother = cSmoother(10, 100); //this means 10 sec avg because reading is 1000ms
 
+    void InitA(){
+        ammeter.setMode(SINGLESHOT);
+        ammeter.setRate(RATE_128); //speed of measuring RATE_128 = 1000/128 = 8ms
+        ammeter.setGain(PAG_256);
+    }
+
+    void InitV(){
+        voltmeter.setMode(SINGLESHOT);
+        voltmeter.setRate(RATE_128);  //speed of measuring RATE_128 = 1000/128 = 8ms
+        voltmeter.setGain(PAG_512); //16V
+    }
+
 //================================= FROM BASIC CLASS
     void SetDataSourceConfig(){
         DataSourceConfig = &DeviceConfig.battery_datasource;
@@ -92,9 +104,12 @@ protected:
         if (millis() > ReadTimer + ReadInterval) {
             ReadTimer = millis();
             // getCurrent return in mA,
-            // abs value to protect from reverse polarity
+            // abs value to ignore reverse polarity
             // Converting to A and apply shunt ratio
             if (i2cDeviceAvailable(a_address)){
+                if (_Current == N2kDoubleNA){
+                    InitA();
+                }
                 _Current = abs(ammeter.getCurrent()) * DeviceConfig.ameter_shunt_ratio / 1000;
                 ASmoother.Smooth(&_Current);
             }
@@ -103,6 +118,9 @@ protected:
             }
             //getVoltage return in mv
             if (i2cDeviceAvailable(v_address)){
+                if (_Voltage == N2kDoubleNA){
+                    InitV();
+                }
                 _Voltage = voltmeter.getVoltage() / 1000;
                 VSmoother.Smooth(&_Voltage);
             }
@@ -145,11 +163,7 @@ protected:
     }
 
     void InitHardware(){
-        ammeter.setMode(SINGLESHOT);
-        ammeter.setRate(RATE_128); //speed of measuring RATE_128 = 1000/128 = 8ms
-        ammeter.setGain(PAG_256);
-        voltmeter.setMode(SINGLESHOT);
-        voltmeter.setRate(RATE_128);  //speed of measuring RATE_128 = 1000/128 = 8ms
-        voltmeter.setGain(PAG_512); //16V
+        InitA();
+        InitV();
     }
 };
