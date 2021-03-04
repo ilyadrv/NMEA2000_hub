@@ -42,6 +42,8 @@
 
 #include "Web/Parsing.cpp"
 #include "Web/WebServer.cpp"
+#include "Web/detail/mimetable.cpp"
+
 
 bool _logoShown = false;
 
