@@ -30,12 +30,15 @@
     <div class="container">
       <div class="row">
         <div class="col-sm text-center">
-            <span id="g_air_p_text"></span> <span>hPa</span>
-            <canvas width=380 height=150 id="g_air_p"></canvas>
+            <span id="g_air_p_text"></span>&nbsp;<span>hPa</span>
+            <canvas width=350 height=150 id="g_air_p"></canvas>
             <div>Atmospheric pressure</div>
         </div>
-        <div class="col-sm">
-          One of three columns
+        <div class="col-sm  text-center">
+            <span id="g_cog_text" class="nowrap"></span><span>&deg;</span>
+            <div id="g_cog_text2" class="nowrap gauge_central_label"></div>
+            <canvas width=350 height=150 id="g_cog"></canvas>
+            <div>COG</div>
         </div>
         <div class="col-sm">
           One of three columns
@@ -137,8 +140,6 @@
 </table>
   </div>
 </div>
-
-
 
 
 </body>

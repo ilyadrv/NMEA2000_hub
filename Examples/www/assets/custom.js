@@ -38,15 +38,31 @@ function initTable(table, file){
 
 let gauges = {};
 
+function compassToGauge(val){
+    if (!val.length || val > 360 || val < 0) return null;
+    val = parseFloat(val);
+    if (val > 360 || val < 0) return null;
+    if (val > 180) return val - 180;
+    if (val <= 180) return val + 180;
+}
+
 function refreshGauges(){
     $.get("example3.csv", function(response) {
         let data = $.csv.toObjects(response)[0];
         gauges.air_p.set(data.air_p);
+
+        gauges.cog.set(compassToGauge(data.cog)); // gauges.cog.set([data.mcog,data.cog]);
+        $('#g_cog_text').text(data.cog);
+        let _txt = '';
+        if (data.mcog) _txt += data.mcog + '° M; ';
+        if (data.varia) _txt += data.varia + '° var';
+        $('#g_cog_text2').text(_txt);
+
     });
 }
 
 function InitGauges(){
-    //air preasure
+    //air pressure
     let opts = {
       angle: -0.25,
       lineWidth: 0.07,
@@ -81,11 +97,48 @@ function InitGauges(){
     gauge.setTextField(document.getElementById("g_air_p_text"));
     gauge.maxValue = 1060;
     gauge.setMinValue(960);
-    gauge.animationSpeed = 32;
-    gauge.set(960);
+    gauge.set(gauge.minValue);
     gauges.air_p = gauge;
 
+    //cog
+    opts = {
+      angle: -0.5,
+      lineWidth: 0.07,
+      radiusScale: 1,
+      pointer: {
+        length: 0.46,
+        strokeWidth: 0.013,
+        color: '#000000'
+      },
+      limitMax: false,
+      limitMin: false,
+      colorStart: '#6FADCF',
+      colorStop: '#8FC0DA',
+      strokeColor: '#E0E0E0',
+      generateGradient: true,
+      highDpiSupport: true,
+        staticZones: [
+           {strokeStyle: "#F03E3E", min: 0, max: 180},
+           {strokeStyle: "#30B32D", min: 180, max: 360},
+        ],
+      renderTicks: {
+          divisions: 8,
+          divColor: '#333333',
+          subDivisions: 9,
+          subLength: 0.5,
+          subWidth: 0.3,
+          subColor: '#666666',
+        }
+    };
+    gauge = new Gauge(document.getElementById('g_cog')).setOptions(opts);
+    gauge.maxValue = 360;
+    gauge.setMinValue(0);
+    gauge.set(gauge.minValue);
+    gauge.animationSpeed = 1;
+    gauges.cog = gauge;
 
+
+    refreshGauges();
 }
 
 function _refreshGauges(data){
