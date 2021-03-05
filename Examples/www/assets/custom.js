@@ -39,8 +39,6 @@ function initTable(table, file){
 let gauges = {};
 
 function compassToGauge(val){
-    if (!val.length || val > 360 || val < 0) return null;
-    val = parseFloat(val);
     if (val > 360 || val < 0) return null;
     if (val > 180) return val - 180;
     if (val <= 180) return val + 180;
@@ -51,15 +49,18 @@ function refreshGauges(){
         let data = $.csv.toObjects(response)[0];
 
         gaugeSet(gauges.air_p, data.air_p);
+        gaugeSet(gauges.w_depth, data.w_depth);
 
+        data.cog = Math.round(data.cog);
         gaugeSet(gauges.cog, compassToGauge(data.cog));  // gauges.cog.set([data.mcog,data.cog]);
         $('#g_cog_text').text(data.cog);
         let _txt = '';
-        if (data.mcog) _txt += data.mcog + '° M; ';
-        if (data.varia) _txt += data.varia + '° var';
+        if (data.mcog) _txt += Math.round(data.mcog) + '° M; ';
+        if (data.varia) _txt += data.varia + '° var;';
         $('#g_cog_text2').text(_txt);
 
-        gaugeSet(gauges.w_depth, data.w_depth);
+        gaugeSet(gauges.bat_charge, data.bat_charge);
+        $('#g_bat_charge_text2').text(data.bat_volt + 'V; ' + data.bat_cur + 'A; '  + data.pow_used + 'w/h;' );
     });
 }
 
@@ -156,7 +157,7 @@ function InitGauges(){
       pointer:pointer,
       limitMax: true,
       limitMin: true,
-      generateGradient: true,
+      generateGradient: false,
       highDpiSupport: true,
       staticZones: [
          {strokeStyle: "#F03E3E", min: 0, max: 3},
@@ -168,18 +169,50 @@ function InitGauges(){
           divisions: 3,
           divColor: '#333333',
           subDivisions: 10,
-          subLength: 0.5,
+          subLength: 0.3,
           subWidth: 0.6,
           subColor: '#333333',
         }
     };
-
-    gauge = new Gauge(document.getElementById('w_depth')).setOptions(opts);
-    gauge.setTextField(document.getElementById("g_w_depth_text"));
+    gauge = new Gauge(document.getElementById('g_w_depth')).setOptions(opts);
+    gauge.setTextField(document.getElementById("g_w_depth_text"), 1);
     gauge.maxValue = 30;
     gauge.setMinValue(0);
     gauge.set(gauge.minValue);
     gauges.w_depth = gauge;
+
+    //battery
+    opts = {
+      angle: 0.25,
+      lineWidth: 0.07,
+      radiusScale: 1,
+      pointer:pointer,
+      limitMax: true,
+      limitMin: true,
+      generateGradient: false,
+      highDpiSupport: true,
+      staticZones: [
+         {strokeStyle: "#F03E3E", min: 0, max: 33},
+         {strokeStyle: "#FFDD00", min: 33, max: 66},
+         {strokeStyle: "#30B32D", min: 66, max: 100},
+      ],
+      staticLabels: {font: "10px",   labels: [0, 50,100]},
+      renderTicks: {
+          divisions: 2,
+          divColor: '#333333',
+          subDivisions: 5,
+          subLength: 0.3,
+          subWidth: 0.6,
+          subColor: '#333333',
+        }
+    };
+    gauge = new Gauge(document.getElementById('g_bat_charge')).setOptions(opts);
+    gauge.setTextField(document.getElementById("g_bat_charge_text"), 0);
+    gauge.maxValue = 100;
+    gauge.setMinValue(0);
+    gauge.set(gauge.minValue);
+    gauges.bat_charge = gauge;
+
 
     refreshGauges();
 }

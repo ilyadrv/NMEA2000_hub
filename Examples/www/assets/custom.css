@@ -25,6 +25,15 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
     font-size:9px;
 }
 
+.gauge_central_label2{
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -25%);
+    font-size:9px;
+}
+
 .gauge_cell{
     text-align:center;
 }
