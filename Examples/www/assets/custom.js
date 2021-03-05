@@ -55,8 +55,8 @@ function refreshGauges(){
         gaugeSet(gauges.cog, compassToGauge(data.cog));  // gauges.cog.set([data.mcog,data.cog]);
         $('#g_cog_text').text(data.cog);
         let _txt = '';
-        if (data.mcog) _txt += Math.round(data.mcog) + '° M; ';
-        if (data.varia) _txt += data.varia + '° var;';
+        if (data.mcog) _txt += Math.round(data.mcog) + '°M; ';
+        if (data.varia) _txt += data.varia + '°var;';
         $('#g_cog_text2').text(_txt);
 
         gaugeSet(gauges.bat_charge, data.bat_charge);

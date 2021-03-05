@@ -27,10 +27,10 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
 
 .gauge_central_label2{
     position: absolute;
-    top: 25%;
+    top: 35%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -25%);
+    transform: translate(-50%, -35%);
     font-size:9px;
 }
 
@@ -39,6 +39,6 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
 }
 
 .gauge_cell > canvas{
-    width: 350px;
+    width: 250px;
     height: 150px;
 }
