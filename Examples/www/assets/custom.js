@@ -10,14 +10,29 @@ function getColumnOpts(table) {
     return columns;
 }
 
-function initTable(table, file){
+function csvToTable(table, file){
+    table.DataTable().clear();
     $.get(file, function(response) {
-        table.DataTable( {
-             data: $.csv.toObjects(response),
-            "order": [[ 0, "desc" ]],
-            "columns":  getColumnOpts(table),
-        } );
+        table.DataTable().rows.add($.csv.toObjects(response)).draw();
     });
+}
+
+function initTable(table, file){
+    table.DataTable( {
+        "order": [[ 0, "desc" ]],
+        "columns":  getColumnOpts(table),
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5','excelHtml5','csvHtml5',
+            {
+                text: 'Reload',
+                action: function ( e, dt, node, config ) {
+                    csvToTable(table, file);
+                }
+            }
+        ]
+    } );
+    csvToTable(table, file);
 }
 
 $(document).ready(function() {
