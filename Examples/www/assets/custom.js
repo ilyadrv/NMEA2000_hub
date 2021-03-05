@@ -49,40 +49,59 @@ function compassToGauge(val){
 function refreshGauges(){
     $.get("example3.csv", function(response) {
         let data = $.csv.toObjects(response)[0];
-        gauges.air_p.set(data.air_p);
 
-        gauges.cog.set(compassToGauge(data.cog)); // gauges.cog.set([data.mcog,data.cog]);
+        gaugeSet(gauges.air_p, data.air_p);
+
+        gaugeSet(gauges.cog, compassToGauge(data.cog));  // gauges.cog.set([data.mcog,data.cog]);
         $('#g_cog_text').text(data.cog);
         let _txt = '';
         if (data.mcog) _txt += data.mcog + '° M; ';
         if (data.varia) _txt += data.varia + '° var';
         $('#g_cog_text2').text(_txt);
 
+        gaugeSet(gauges.w_depth, data.w_depth);
     });
 }
 
+function gaugeSet(gauge, val){
+    if (!val.length){
+        gauge.set(val);
+        return;
+    }
+
+    let _parent = $("#"+gauge.canvas.id).closest('.gauge_cell');
+    _parent.find('.g_out_of_range').remove();
+
+    if (val > gauge.maxValue || val < gauge.minValue){
+        _parent.find('.gauge_label').hide();
+        _parent.find('.gauge_label').after($('<span class="g_out_of_range">'+val+'</span>'));
+    }
+    else{
+        _parent.find('.gauge_label').show();
+    }
+    gauge.set(val);
+}
+
 function InitGauges(){
+    let pointer = {
+        length: 0.46,
+        strokeWidth: 0.013,
+        color: '#000000'
+   };
+
     //air pressure
     let opts = {
       angle: -0.25,
       lineWidth: 0.07,
       radiusScale: 1,
-      pointer: {
-        length: 0.46,
-        strokeWidth: 0.013,
-        color: '#000000'
-      },
-      limitMax: false,
-      limitMin: false,
-      colorStart: '#6FADCF',
-      colorStop: '#8FC0DA',
-      strokeColor: '#E0E0E0',
-      generateGradient: true,
+      pointer: pointer,
+      limitMax: true,
+      limitMin: true,
       highDpiSupport: true,
-        staticZones: [
-           {strokeStyle: "#CCCCCC", min: 960, max: 1010},
-           {strokeStyle: "#FFDD00", min: 1010, max: 1060},
-        ],
+      staticZones: [
+         {strokeStyle: "#CCCCCC", min: 960, max: 1010},
+         {strokeStyle: "#FFDD00", min: 1010, max: 1060},
+      ],
       staticLabels: {font: "10px",  labels: [970, 990, 1010, 1030, 1050]},
       renderTicks: {
           divisions: 10,
@@ -105,17 +124,9 @@ function InitGauges(){
       angle: -0.5,
       lineWidth: 0.07,
       radiusScale: 1,
-      pointer: {
-        length: 0.46,
-        strokeWidth: 0.013,
-        color: '#000000'
-      },
-      limitMax: false,
-      limitMin: false,
-      colorStart: '#6FADCF',
-      colorStop: '#8FC0DA',
-      strokeColor: '#E0E0E0',
-      generateGradient: true,
+      pointer: pointer,
+      limitMax: true,
+      limitMin: true,
       highDpiSupport: true,
         staticZones: [
            {strokeStyle: "#F03E3E", min: 0, max: 180},
@@ -137,6 +148,38 @@ function InitGauges(){
     gauge.animationSpeed = 1;
     gauges.cog = gauge;
 
+    //depth
+    opts = {
+      angle: 0.25,
+      lineWidth: 0.14,
+      radiusScale: 1,
+      pointer:pointer,
+      limitMax: true,
+      limitMin: true,
+      generateGradient: true,
+      highDpiSupport: true,
+      staticZones: [
+         {strokeStyle: "#F03E3E", min: 0, max: 3},
+         {strokeStyle: "#FFDD00", min: 3, max: 10},
+         {strokeStyle: "#30B32D", min: 10, max: 30},
+      ],
+      staticLabels: {font: "10px",  labels: [0,10,20,30]},
+      renderTicks: {
+          divisions: 3,
+          divColor: '#333333',
+          subDivisions: 10,
+          subLength: 0.5,
+          subWidth: 0.6,
+          subColor: '#333333',
+        }
+    };
+
+    gauge = new Gauge(document.getElementById('w_depth')).setOptions(opts);
+    gauge.setTextField(document.getElementById("g_w_depth_text"));
+    gauge.maxValue = 30;
+    gauge.setMinValue(0);
+    gauge.set(gauge.minValue);
+    gauges.w_depth = gauge;
 
     refreshGauges();
 }

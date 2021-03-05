@@ -9,7 +9,7 @@
     <script type="text/javascript" src="assets/datatables.min.js"></script>
     <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/jquery-csv.js"></script>
-    <script src="assets/gauge/gauge.min.js"></script>
+    <script src="assets/gauge/gauge.js"></script>
     <script type="text/javascript" src="assets/custom.js"></script>
 </head>
 <body>
@@ -29,19 +29,21 @@
   <div class="tab-pane fade show active" id="pills-live" role="tabpanel" aria-labelledby="pills-live-tab">
     <div class="container">
       <div class="row">
-        <div class="col-sm text-center">
-            <span id="g_air_p_text"></span>&nbsp;<span>hPa</span>
-            <canvas width=350 height=150 id="g_air_p"></canvas>
+        <div class="col-sm gauge_cell">
+            <span id="g_air_p_text"  class="gauge_label"></span>&nbsp;<span>hPa</span>
+            <canvas id="g_air_p"></canvas>
             <div>Atmospheric pressure</div>
         </div>
-        <div class="col-sm  text-center">
-            <span id="g_cog_text" class="nowrap"></span><span>&deg;</span>
+        <div class="col-sm  gauge_cell">
+            <span id="g_cog_text" class="gauge_label"></span><span>&deg;</span>
             <div id="g_cog_text2" class="nowrap gauge_central_label"></div>
-            <canvas width=350 height=150 id="g_cog"></canvas>
+            <canvas id="g_cog"></canvas>
             <div>COG</div>
         </div>
-        <div class="col-sm">
-          One of three columns
+        <div class="col-sm gauge_cell">
+            <span id="g_w_depth_text"  class="gauge_label"></span>&nbsp;<span>m</span>
+            <canvas id="w_depth"></canvas>
+            <div>Depth</div>
         </div>
       </div>
     </div>

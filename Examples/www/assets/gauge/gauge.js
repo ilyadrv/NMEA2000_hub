@@ -94,6 +94,8 @@
   };
 
   addCommas = function(nStr) {
+    return nStr;
+    // I DONT WANT THIS!!!
     var rgx, x, x1, x2;
     nStr += '';
     x = nStr.split('.');
