@@ -7,3 +7,7 @@ body{ padding:10px }
 
 #pills-tab .nav-link { padding-top:2px; padding-bottom:2px}
 .dataTables_wrapper select {padding-top:2px; padding-bottom:2px; height: 20px !important}
+
+.dataTables_filter, .dataTables_length {display:inline-block}
+.dt-buttons{ margin-left:20px; margin-right:20px}
+div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: start; !important}

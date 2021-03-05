@@ -21,7 +21,8 @@ function initTable(table, file){
     table.DataTable( {
         "order": [[ 0, "desc" ]],
         "columns":  getColumnOpts(table),
-        dom: 'Bfrtip',
+        "fixedHeader": true,
+        dom: 'lBfrtpi', //        dom: 'Bfrtip',lBrtip
         buttons: [
             'copyHtml5','excelHtml5','csvHtml5',
             {
