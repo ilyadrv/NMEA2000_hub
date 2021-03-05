@@ -18,10 +18,10 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
 
 .gauge_central_label{
     position: absolute;
-    top: 55%;
+    top: 60%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -55%);
+    transform: translate(-50%, -60%);
     font-size:9px;
 }
 
