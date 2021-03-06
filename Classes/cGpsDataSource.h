@@ -234,8 +234,12 @@ protected:
             //TinyGPSCustom pdop = TinyGPSCustom(gps, "GPGSA", 15); // $GPGSA sentence, 15th element
             //TinyGPSCustom hdop = TinyGPSCustom(gps, "GPGSA", 16) // $GPGSA sentence, 16th element
             //TinyGPSCustom vdop = TinyGPSCustom(gps, "GPGSA", 17); // $GPGSA sentence, 17th element
-            //Variation = mVariation.value(); // unit value is empty TinyGPSCustom mVariation = TinyGPSCustom(gps, "GPGSA", 10)
             //MCOG = N2kDoubleNA,
+
+            //TinyGPSCustom magneticVariation(gps, "GPRMC", 10)
+            //Variation = mVariation.value();
+            Variation = 0; //because current device does not provide variation data;
+
         }
         smartDelay(0); //it is not very smart. we'll keep it zero
         return result;

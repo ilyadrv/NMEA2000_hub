@@ -38,25 +38,35 @@ function initTable(table, file){
 
 let gauges = {};
 
-function compassToGauge(val){
-    if (val > 360 || val < 0) return null;
-    if (val > 180) return val - 180;
-    if (val <= 180) return val + 180;
-}
-
 function refreshGauges(){
     $.get("example3.csv", function(response) {
         let data = $.csv.toObjects(response)[0];
 
         gaugeSet(gauges.air_p, data.air_p);
+        let _txt = '';
+        if (data.air_t) _txt += data.air_t + '°C; ';
+        if (data.air_h) _txt += data.air_h + '%;';
+        $('#g_air_p_text2').text(_txt);
+
         gaugeSet(gauges.w_depth, data.w_depth);
+        _txt = '';
+        if (data.w_temp) _txt += data.w_temp + '°C';
+        $('#g_w_depth_text2').text(_txt);
 
         data.cog = Math.round(data.cog);
-        gaugeSet(gauges.cog, compassToGauge(data.cog));  // gauges.cog.set([data.mcog,data.cog]);
-        $('#g_cog_text').text(data.cog);
-        let _txt = '';
-        if (data.mcog) _txt += Math.round(data.mcog) + '°M; ';
-        if (data.varia) _txt += data.varia + '°var;';
+        let heading;
+        if (data.head_t){
+            data.head_t = Math.round(data.head_t);
+            gauges.cog.set([data.head_t, data.cog]);
+            $('#g_cog_text').text(data.cog + '/' + data.head_t);
+        }
+        else{
+            gauges.cog.set(data.cog);
+            $('#g_cog_text').text(data.cog);
+        }
+        _txt = '';
+        //if (data.mcog) _txt += Math.round(data.mcog) + '°M; '; //knowing variation is enought
+        if (data.varia) _txt += data.varia + '° var;';
         $('#g_cog_text2').text(_txt);
 
         gaugeSet(gauges.bat_charge, data.bat_charge);
@@ -84,18 +94,22 @@ function gaugeSet(gauge, val){
 }
 
 function InitGauges(){
-    let pointer = {
-        length: 0.46,
-        strokeWidth: 0.013,
-        color: '#000000'
-   };
+    function pointer(){
+        return {
+                length: 0.46,
+                strokeWidth: 0.013,
+                color: '#000000',
+                color2: '#CCCCCC',
+                angle_offset: 0,
+           };
+    }
 
     //air pressure
     let opts = {
       angle: -0.25,
       lineWidth: 0.07,
       radiusScale: 1,
-      pointer: pointer,
+      pointer: pointer(),
       limitMax: true,
       limitMin: true,
       highDpiSupport: true,
@@ -125,7 +139,7 @@ function InitGauges(){
       angle: -0.5,
       lineWidth: 0.07,
       radiusScale: 1,
-      pointer: pointer,
+      pointer: pointer(),
       limitMax: true,
       limitMin: true,
       highDpiSupport: true,
@@ -142,6 +156,7 @@ function InitGauges(){
           subColor: '#666666',
         }
     };
+    opts.pointer.angle_offset=180;
     gauge = new Gauge(document.getElementById('g_cog')).setOptions(opts);
     gauge.maxValue = 360;
     gauge.setMinValue(0);
@@ -154,7 +169,7 @@ function InitGauges(){
       angle: 0.25,
       lineWidth: 0.14,
       radiusScale: 1,
-      pointer:pointer,
+      pointer:pointer(),
       limitMax: true,
       limitMin: true,
       generateGradient: false,
@@ -186,7 +201,7 @@ function InitGauges(){
       angle: 0.25,
       lineWidth: 0.07,
       radiusScale: 1,
-      pointer:pointer,
+      pointer:pointer(),
       limitMax: true,
       limitMin: true,
       generateGradient: false,

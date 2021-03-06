@@ -22,7 +22,8 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -60%);
-    font-size:9px;
+    font-size:10px;
+    white-space: nowrap;
 }
 
 .gauge_central_label2{
@@ -31,7 +32,8 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -35%);
-    font-size:9px;
+    font-size:10px;
+    white-space: nowrap;
 }
 
 .gauge_cell{
