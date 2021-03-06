@@ -66,11 +66,11 @@ function refreshGauges(){
         }
         _txt = '';
         //if (data.mcog) _txt += Math.round(data.mcog) + '°M; '; //knowing variation is enought
-        if (data.varia) _txt += data.varia + '° var;';
+        if (data.varia) _txt += data.varia + '° var';
         $('#g_cog_text2').text(_txt);
 
         gaugeSet(gauges.bat_charge, data.bat_charge);
-        $('#g_bat_charge_text2').text(data.bat_volt + 'V; ' + data.bat_cur + 'A; '  + data.pow_used + 'w/h;' );
+        $('#g_bat_charge_text2').text(data.bat_volt + 'V; ' + data.bat_cur + 'A; '  + data.pow_used + 'w/h' );
     });
 }
 
@@ -98,9 +98,6 @@ function InitGauges(){
         return {
                 length: 0.46,
                 strokeWidth: 0.013,
-                color: '#000000',
-                color2: '#6666FF',
-                angle_offset: 0,
            };
     }
 

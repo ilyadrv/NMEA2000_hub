@@ -316,7 +316,7 @@ let _radToDeg = 57.295779513;
       strokeWidth: 0.035,
       length: 0.1,
       color: "#000000",
-      color2: '#CCCCCC',
+      color2: '#00CCFF',
       iconPath: null,
       iconScale: 1.0,
       iconAngle: 0,
