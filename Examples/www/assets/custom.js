@@ -85,6 +85,11 @@ function refreshGauges(){
         _txt = '';
         if (data.twd) _txt += data.twd + '°';
         $('#g_wind_text2').text(_txt);
+
+        gaugeSet(gauges.heel, data.heel);
+        _txt = '';
+        if (data.trim) _txt += 'trim: ' + data.trim + '°';
+        $('#g_heel_text2').text(_txt);
     });
 }
 
@@ -271,7 +276,36 @@ function InitGauges(){
     gauge.animationSpeed = 1;
     gauges.wind = gauge;
 
-
+    //heel
+    opts = {
+      angle: 0.25,
+      lineWidth: 0.07,
+      radiusScale: 1,
+      pointer:pointer(),
+      limitMax: true,
+      limitMin: true,
+      generateGradient: false,
+      highDpiSupport: true,
+      staticZones: [
+           {strokeStyle: "#F03E3E", min: -45, max: 0},
+           {strokeStyle: "#30B32D", min: 0, max: 45},
+      ],
+      staticLabels: {font: "10px",   labels: [0, 50,100]},
+      renderTicks: {
+          divisions: 2,
+          divColor: '#333333',
+          subDivisions: 5,
+          subLength: 0.3,
+          subWidth: 0.6,
+          subColor: '#333333',
+        }
+    };
+    gauge = new Gauge(document.getElementById('g_heel')).setOptions(opts);
+    gauge.setTextField(document.getElementById("g_heel_text"), 0);
+    gauge.maxValue = 45;
+    gauge.setMinValue(-45);
+    gauge.set(gauge.minValue);
+    gauges.heel = gauge;
 
     refreshGauges();
 }
