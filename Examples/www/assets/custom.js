@@ -57,8 +57,8 @@ function refreshGauges(){
         let heading;
         if (data.head_t){
             data.head_t = Math.round(data.head_t);
-            gauges.cog.set([data.head_t, data.cog]);
-            $('#g_cog_text').text(data.cog + '/' + data.head_t);
+            gauges.cog.set([data.cog, data.head_t]);
+            $('#g_cog_text').html(data.cog + '/<span class="gauge_second_arrow">' + data.head_t + '</span>');
         }
         else{
             gauges.cog.set(data.cog);
@@ -99,7 +99,7 @@ function InitGauges(){
                 length: 0.46,
                 strokeWidth: 0.013,
                 color: '#000000',
-                color2: '#CCCCCC',
+                color2: '#6666FF',
                 angle_offset: 0,
            };
     }

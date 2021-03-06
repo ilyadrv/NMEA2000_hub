@@ -44,3 +44,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
     width: 250px;
     height: 150px;
 }
+
+.gauge_second_arrow{
+    color: #6666FF;
+}
