@@ -71,6 +71,20 @@ function refreshGauges(){
 
         gaugeSet(gauges.bat_charge, data.bat_charge);
         $('#g_bat_charge_text2').text(data.bat_volt + 'V; ' + data.bat_cur + 'A; '  + data.pow_used + 'w/h' );
+
+        if (data.twa){
+            gauges.wind.set([data.awa, data.twa]);
+            $('#g_wind_text').html(Math.abs(data.awa) + '/<span class="gauge_second_arrow">' + Math.abs(data.twa) + '</span>');
+            $('#g_wind_text3').html(data.aws + '/<span class="gauge_second_arrow">' + data.tws + '</span>kn');
+        }
+        else{
+            gauges.cog.set(data.awa);
+            $('#g_wind_text').text(Math.abs(data.awa));
+            $('#g_wind_text3').html(data.aws);
+        }
+        _txt = '';
+        if (data.twd) _txt += data.twd + '°';
+        $('#g_wind_text2').text(_txt);
     });
 }
 
@@ -224,6 +238,39 @@ function InitGauges(){
     gauge.setMinValue(0);
     gauge.set(gauge.minValue);
     gauges.bat_charge = gauge;
+
+    //wind
+    opts = {
+      angle: -0.5,
+      lineWidth: 0.07,
+      radiusScale: 1,
+      pointer: pointer(),
+      limitMax: true,
+      limitMin: true,
+      highDpiSupport: true,
+        staticZones: [
+           {strokeStyle: "#CCCCCC", min: -180, max: -150},
+           {strokeStyle: "#F03E3E", min: -150, max: -30},
+           {strokeStyle: "#CCCCCC", min: -30, max: 30},
+           {strokeStyle: "#30B32D", min: 30, max: 150},
+           {strokeStyle: "#CCCCCC", min: 150, max: 180},
+        ],
+      renderTicks: {
+          divisions: 8,
+          divColor: '#333333',
+          subDivisions: 9,
+          subLength: 0.5,
+          subWidth: 0.3,
+          subColor: '#666666',
+        }
+    };
+    gauge = new Gauge(document.getElementById('g_wind')).setOptions(opts);
+    gauge.maxValue = 180;
+    gauge.setMinValue(-180);
+    gauge.set(gauge.minValue);
+    gauge.animationSpeed = 1;
+    gauges.wind = gauge;
+
 
 
     refreshGauges();
