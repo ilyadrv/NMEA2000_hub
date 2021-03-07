@@ -93,6 +93,19 @@ function refreshGauges(){
 
         gaugeSet(gauges.polar, data.boat_to_polar);
         $('#g_polar_text2').html('boat/polar<br>' + data.stw + '/' + data.polar_stw);
+
+        if (data.stw){
+            gauges.sog.set([data.sog, data.stw]);
+            $('#g_sog_text').html(data.sog + '/<span class="gauge_second_arrow">' + data.stw + '</span>');
+        }
+        else{
+            gauges.sog.set(data.sog);
+            $('#g_sog_text').text(data.stw);
+        }
+        if (data.polar_stw) {
+            $('#g_sog_text2').html('<br>polar:<br>' + data.polar_stw + 'kn; ' + data.boat_to_polar + '%');
+        }
+
     });
 }
 
@@ -123,7 +136,7 @@ function InitGauges(){
            };
     }
 
-    //air pressure
+    //Weather
     let opts = {
       angle: -0.25,
       lineWidth: 0.07,
@@ -140,10 +153,10 @@ function InitGauges(){
       renderTicks: {
           divisions: 10,
           divColor: '#333333',
-          subDivisions: 10,
+          subDivisions: 2,
           subLength: 0.5,
           subWidth: 0.3,
-          subColor: '#666666',
+          subColor: '#333333',
         }
     };
     let gauge = new Gauge(document.getElementById('g_air_p')).setOptions(opts);
@@ -167,12 +180,12 @@ function InitGauges(){
            {strokeStyle: "#30B32D", min: 180, max: 360},
         ],
       renderTicks: {
-          divisions: 8,
+          divisions: 12,
           divColor: '#333333',
-          subDivisions: 9,
+          subDivisions: 6,
           subLength: 0.5,
           subWidth: 0.3,
-          subColor: '#666666',
+          subColor: '#333333',
         }
     };
     opts.pointer.angle_offset=180;
@@ -198,11 +211,11 @@ function InitGauges(){
          {strokeStyle: "#FFDD00", min: 3, max: 10},
          {strokeStyle: "#30B32D", min: 10, max: 30},
       ],
-      staticLabels: {font: "10px",  labels: [0,10,20,30]},
+      staticLabels: {font: "10px",  labels: [0,5,10,15,20,25,30]},
       renderTicks: {
           divisions: 3,
           divColor: '#333333',
-          subDivisions: 10,
+          subDivisions: 2,
           subLength: 0.3,
           subWidth: 0.6,
           subColor: '#333333',
@@ -226,14 +239,10 @@ function InitGauges(){
       highDpiSupport: true,
       generateGradient: true,
       percentColors : [[0.0, "#F03E3E"], [0.5, "#FFDD00"], [1.0, "#30B32D"]],
-      staticLabels: {font: "10px",   labels: [0, 50,100]},
+      staticLabels: {font: "10px",   labels: [0,20,40,60,80,100]},
       renderTicks: {
-          divisions: 2,
+          divisions: 10,
           divColor: '#333333',
-          subDivisions: 5,
-          subLength: 0.3,
-          subWidth: 0.6,
-          subColor: '#333333',
         }
     };
     gauge = new Gauge(document.getElementById('g_bat_charge')).setOptions(opts);
@@ -260,12 +269,12 @@ function InitGauges(){
            {strokeStyle: "#CCCCCC", min: 150, max: 180},
         ],
       renderTicks: {
-          divisions: 8,
+          divisions: 12,
           divColor: '#333333',
-          subDivisions: 9,
+          subDivisions: 6,
           subLength: 0.5,
           subWidth: 0.3,
-          subColor: '#666666',
+          subColor: '#333333',
         }
     };
     gauge = new Gauge(document.getElementById('g_wind')).setOptions(opts);
@@ -286,23 +295,23 @@ function InitGauges(){
       generateGradient: false,
       highDpiSupport: true,
       staticZones: [
-           {strokeStyle: "#F03E3E", min: -45, max: 0},
-           {strokeStyle: "#30B32D", min: 0, max: 45},
+           {strokeStyle: "#F03E3E", min: -40, max: 0},
+           {strokeStyle: "#30B32D", min: 0, max: 40},
       ],
-      staticLabels: {font: "10px",   labels: [0, 50,100]},
+      staticLabels: {font: "10px",  labels: [-40,-30,-20,-10,0,10,20,30,40]},
       renderTicks: {
-          divisions: 2,
+          divisions: 8,
           divColor: '#333333',
-          subDivisions: 5,
-          subLength: 0.3,
-          subWidth: 0.6,
+          subDivisions: 2,
+          subLength: 0.5,
+          subWidth: 0.3,
           subColor: '#333333',
         }
     };
     gauge = new Gauge(document.getElementById('g_heel')).setOptions(opts);
     gauge.setTextField(document.getElementById("g_heel_text"), 0);
-    gauge.maxValue = 45;
-    gauge.setMinValue(-45);
+    gauge.maxValue = 40;
+    gauge.setMinValue(-40);
     gauge.set(gauge.minValue);
     gauges.heel = gauge;
 
@@ -321,6 +330,10 @@ function InitGauges(){
       renderTicks: {
           divisions: 5,
           divColor: '#333333',
+          subDivisions: 2,
+          subLength: 0.5,
+          subWidth: 0.3,
+          subColor: '#333333',
         }
     };
     gauge = new Gauge(document.getElementById('g_polar')).setOptions(opts);
@@ -330,7 +343,34 @@ function InitGauges(){
     gauge.set(gauge.minValue);
     gauges.polar = gauge;
 
-
+    //SOG STW
+    opts = {
+      angle: -0.25,
+      lineWidth: 0.07,
+      radiusScale: 1,
+      pointer: pointer(),
+      limitMax: true,
+      limitMin: true,
+      highDpiSupport: true,
+      staticLabels: {font: "10px",  labels: [0,1,2,3,4,5,6,7,8]},
+      staticZones: [
+           {strokeStyle: "#FFDD00", min: 0, max: 5},
+           {strokeStyle: "#30B32D", min: 5, max: 8},
+      ],
+      renderTicks: {
+          divisions: 8,
+          divColor: '#333333',
+          subDivisions: 2,
+          subLength: 0.5,
+          subWidth: 0.5,
+          subColor: '#333333',
+        }
+    };
+    gauge = new Gauge(document.getElementById('g_sog')).setOptions(opts);
+    gauge.maxValue = 8;
+    gauge.setMinValue(0);
+    gauge.set(gauge.minValue);
+    gauges.sog = gauge;
     refreshGauges();
 }
 
