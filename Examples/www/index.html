@@ -83,12 +83,31 @@
         </div>
       </div>
     </div>
-      time,uptime,lat,lon,sog,alt,gps_time,gps_src,
-
-      head_src
-
-nav_xte,nav_wp_distance,nav_eta, nav_wp_bearing_t,nav_wp_bearing_m, nav_dest_lat,nav_dest_lon,nav_wp_vmg,
-
+      <hr>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+            <ul class="data_src">
+                <li>GPS: <span id="gps_src"></span></li>
+                <li>Heading: <span id="head_src"></span></li>
+                <li>Attitude: <span id="att_src"></span></li>
+            </ul>
+        </div>
+        <div class="col-sm" id="coordinates">
+            <ul class="the_coordinates">
+                <li>Lat: <span id="gps_lat"></span></li>
+                <li>Lon: <span id="gps_lon"></span></li>
+            </ul>
+        </div>
+        <div class="col-sm">
+            <ul class="the_time">
+                <li>Time: <span id="device_time"></span></li>
+                <li>GPS time: <span id="gps_time"></span></li>
+                <li>Uptime: <span id="uptime"></span></li>
+            </ul>
+        </div>
+      </div>
+    </div>
 
   </div>
   <div class="tab-pane fade" id="pills-log" role="tabpanel" aria-labelledby="pills-log-tab">

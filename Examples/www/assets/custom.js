@@ -42,17 +42,20 @@ function refreshGauges(){
     $.get("example3.csv", function(response) {
         let data = $.csv.toObjects(response)[0];
 
+        //==========================
         gaugeSet(gauges.air_p, data.air_p);
         let _txt = '';
         if (data.air_t) _txt += data.air_t + '°C; ';
         if (data.air_h) _txt += data.air_h + '%;';
         $('#g_air_p_text2').text(_txt);
 
+        //==========================
         gaugeSet(gauges.w_depth, data.w_depth);
         _txt = '';
         if (data.w_temp) _txt += data.w_temp + '°C';
         $('#g_w_depth_text2').text(_txt);
 
+        //==========================
         data.cog = Math.round(data.cog);
         let heading;
         if (data.head_t){
@@ -69,9 +72,11 @@ function refreshGauges(){
         if (data.varia) _txt += data.varia + '° var';
         $('#g_cog_text2').text(_txt);
 
+        //==========================
         gaugeSet(gauges.bat_charge, data.bat_charge);
         $('#g_bat_charge_text2').text(data.bat_volt + 'V; ' + data.bat_cur + 'A; '  + data.pow_used + 'w/h' );
 
+        //==========================
         if (data.twa){
             gauges.wind.set([data.awa, data.twa]);
             $('#g_wind_text').html(Math.abs(data.awa) + '/<span class="gauge_second_arrow">' + Math.abs(data.twa) + '</span>');
@@ -86,14 +91,17 @@ function refreshGauges(){
         if (data.twd) _txt += data.twd + '°';
         $('#g_wind_text2').text(_txt);
 
+        //==========================
         gaugeSet(gauges.heel, data.heel);
         _txt = '';
         if (data.trim) _txt += 'trim: ' + data.trim + '°';
         $('#g_heel_text2').text(_txt);
 
+        //==========================
         gaugeSet(gauges.polar, data.boat_to_polar);
         $('#g_polar_text2').html('boat/polar<br>' + data.stw + '/' + data.polar_stw);
 
+        //==========================
         if (data.stw){
             gauges.sog.set([data.sog, data.stw]);
             $('#g_sog_text').html(data.sog + '/<span class="gauge_second_arrow">' + data.stw + '</span>');
@@ -106,6 +114,15 @@ function refreshGauges(){
             $('#g_sog_text2').html('<br>polar:<br>' + data.polar_stw + 'kn; ' + data.boat_to_polar + '%');
         }
 
+        //==========================
+        $('#gps_src').text(data.gps_src);
+        $('#head_src').text(data.head_src);
+        $('#att_src').text(data.att_src);
+        $('#gps_lat').text(data.lat);
+        $('#gps_lon').text(data.lon);
+        $('#device_time').text(data.time);
+        $('#gps_time').text(data.gps_time);
+        $('#uptime').text(data.uptime);
     });
 }
 
