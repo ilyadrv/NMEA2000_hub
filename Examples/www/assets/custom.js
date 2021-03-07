@@ -90,6 +90,9 @@ function refreshGauges(){
         _txt = '';
         if (data.trim) _txt += 'trim: ' + data.trim + '°';
         $('#g_heel_text2').text(_txt);
+
+        gaugeSet(gauges.polar, data.boat_to_polar);
+        $('#g_polar_text2').html('boat/polar<br>' + data.stw + '/' + data.polar_stw);
     });
 }
 
@@ -220,13 +223,9 @@ function InitGauges(){
       pointer:pointer(),
       limitMax: true,
       limitMin: true,
-      generateGradient: false,
       highDpiSupport: true,
-      staticZones: [
-         {strokeStyle: "#F03E3E", min: 0, max: 33},
-         {strokeStyle: "#FFDD00", min: 33, max: 66},
-         {strokeStyle: "#30B32D", min: 66, max: 100},
-      ],
+      generateGradient: true,
+      percentColors : [[0.0, "#F03E3E"], [0.5, "#FFDD00"], [1.0, "#30B32D"]],
       staticLabels: {font: "10px",   labels: [0, 50,100]},
       renderTicks: {
           divisions: 2,
@@ -306,6 +305,31 @@ function InitGauges(){
     gauge.setMinValue(-45);
     gauge.set(gauge.minValue);
     gauges.heel = gauge;
+
+     //Polar
+    opts = {
+      angle: 0.25,
+      lineWidth: 0.07,
+      radiusScale: 1,
+      pointer:pointer(),
+      limitMax: true,
+      limitMin: true,
+      generateGradient: true,
+      percentColors : [[0.0, "#F03E3E"], [0.5, "#FFDD00"], [1.0, "#30B32D"]],
+      highDpiSupport: true,
+      staticLabels: {font: "10px",   labels: [50,60,70,80,90,100]},
+      renderTicks: {
+          divisions: 5,
+          divColor: '#333333',
+        }
+    };
+    gauge = new Gauge(document.getElementById('g_polar')).setOptions(opts);
+    gauge.setTextField(document.getElementById("g_polar_text"), 0);
+    gauge.maxValue = 100;
+    gauge.setMinValue(50);
+    gauge.set(gauge.minValue);
+    gauges.polar = gauge;
+
 
     refreshGauges();
 }
