@@ -254,10 +254,14 @@ protected:
 public:
     void startWebServer() {
         setup();
+        on("/current.csv", [&]() {
+            send(200, "text/csv", cLog::boat_data_csv_headers() + '\n' + cLog::lastBoatData);
+        });
+
         serveStatic("/logs/", SD, "/logs/");
         serveStatic("/", SD, "/www/");
         onNotFound([&]() {
-          send(200, "text/html", "<a href='/'>GO HOME</a>");
+          send(200, "text/html", "<a href='/index.html'>GO HOME</a>");
         });
         begin();
     }

@@ -561,10 +561,8 @@ let _radToDeg = 57.295779513;
           }
         }
         this.gp[i].value = val;
-        if (i > 0){
-            this.gp[i].setOptions({
-              color: this.gp[i].options.color2,
-            });
+        if (i == 1){
+            this.gp[i].setOptions({color: this.gp[i].options.color2,});
         }
         this.gp[i++].setOptions({
           minValue: this.minValue,

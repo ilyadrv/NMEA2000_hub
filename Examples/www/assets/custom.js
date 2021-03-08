@@ -39,7 +39,7 @@ function initTable(table, file){
 let gauges = {};
 
 function refreshGauges(){
-    $.get("example3.csv", function(response) {
+    $.get("/current.csv", function(response) {
         let data = $.csv.toObjects(response)[0];
 
         //==========================
@@ -397,8 +397,8 @@ function _refreshGauges(data){
 }
 
 $(document).ready(function() {
-    initTable($('#log'), "example1.csv");
-    initTable($('#debug'), "example2.csv");
+    initTable($('#log'), "/logs/log.csv");
+    initTable($('#debug'), "/logs/debug.csv");
     InitGauges();
     setInterval(refreshGauges, 5000); //refresh each 5 sec
 } );
