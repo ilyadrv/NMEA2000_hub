@@ -18,6 +18,37 @@ public:
             + "air_t,air_h,air_p";
     }
 
+    static String logFiles(){
+        File dir = SD.open("/logs");
+        if (dir) {
+            DynamicJsonDocument _doc(10 * 1024);
+            unsigned char l = 0;
+            unsigned char d = 0;
+            String result;
+            while (true) {
+                File entry =  dir.openNextFile();
+                if (!entry) break;
+                if (!entry.isDirectory()) {
+                    String _name = String(entry.name());
+                    _debug(_name);
+                    if (_name.startsWith("/logs/log_") && l < 100){
+                        _debug("1");
+                        _doc["log"][l++] = _name;
+                    }
+                    else if (_name.startsWith("/logs/debug_") && d < 100){
+                        _debug("2");
+                        _doc["debug"][d++] = _name;
+                    }
+                }
+            }
+            serializeJson(_doc, result);
+            return result;
+        }
+        else{
+            return String("{}");
+        }
+    }
+
 protected:
     static unsigned long timer;  // Time for log writing
     static String _last_pgns;
@@ -156,8 +187,7 @@ public:
             timer = millis();
             //get date based file name
             //file per day strategy
-            String filename = String("/logs/log_") + Config->boat_name + "_" + Data->Gps.TimeStr(Now, "%Y-%m-%d") + ".csv";
-            filename.toLowerCase();
+            String filename = String("/logs/log_") + Data->Gps.TimeStr(Now, "%Y-%m-%d") + ".csv";
 
             bool _fileExists = SD.exists(filename);
             File _log_file = SD.open(filename, FILE_WRITE);

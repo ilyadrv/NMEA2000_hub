@@ -258,6 +258,10 @@ public:
             send(200, "text/csv", cLog::boat_data_csv_headers() + '\n' + cLog::lastBoatData);
         });
 
+        on("/log_files.json", [&]() {
+            send(200, "text/json",  cLog::logFiles().c_str());
+        });
+
         serveStatic("/logs/", SD, "/logs/");
         serveStatic("/", SD, "/www/");
         onNotFound([&]() {

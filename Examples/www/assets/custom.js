@@ -10,14 +10,59 @@ function getColumnOpts(table) {
     return columns;
 }
 
-function csvToTable(table, file){
+function debugTableRefresh(){
+    let table = $('#debug');
+    let _select = $('#debug_files');
     table.DataTable().clear();
-    $.get(file, function(response) {
-        table.DataTable().rows.add($.csv.toObjects(response)).draw();
+    $.getJSON( 'log_files.json', function(data) {
+        if (data.debug){
+            let _val =  _select.val();
+            _select.find('option').remove();
+            for (let i = data.debug.length -1; i >= 0; i--){
+                _select.append(new Option(data.debug[i], data.debug[i]));
+            }
+            if (_val){ _select.val(_val); }
+        }
+    })
+    .always(function() {
+        $.get(_select.val(), function(response) {
+            table.DataTable().rows.add($.csv.toObjects(response));
+        })
+        .always(function() {
+            table.DataTable().draw();
+        });
     });
 }
 
-function initTable(table, file){
+function logTableRefresh(){
+    let table = $('#log');
+    let _select = $('#log_files');
+    table.DataTable().clear();
+    $.getJSON( 'log_files.json', function(data) {
+        if (data.log){
+            let _val =  _select.val();
+            _select.find('option').remove();
+            console.log(data.log.length);
+            for (let i = data.log.length-1; i >= 0; i--){
+                console.log(i);
+                console.log(data.log[i]);
+                _select.append(new Option(data.log[i], data.log[i]));
+            }
+            if (_val){ _select.val(_val); }
+        }
+    })
+    .always(function() {
+        $.get(_select.val(), function(response) {
+            table.DataTable().rows.add($.csv.toObjects(response));
+        })
+        .always(function() {
+            table.DataTable().draw();
+        });
+    });
+}
+
+function initLogTable(){
+    let table = $('#log');
     table.DataTable( {
         "order": [[ 0, "desc" ]],
         "columns":  getColumnOpts(table),
@@ -28,18 +73,36 @@ function initTable(table, file){
             {
                 text: 'Reload',
                 action: function ( e, dt, node, config ) {
-                    csvToTable(table, file);
+                    logTableRefresh();
                 }
             }
         ]
     } );
-    csvToTable(table, file);
+}
+
+function initDebugTable(){
+    let table = $('#debug');
+    table.DataTable( {
+        "order": [[ 0, "desc" ]],
+        "columns":  getColumnOpts(table),
+        "fixedHeader": true,
+        dom: 'lBfrtpi', //        dom: 'Bfrtip',lBrtip
+        buttons: [
+            'copyHtml5','excelHtml5','csvHtml5',
+            {
+                text: 'Reload',
+                action: function ( e, dt, node, config ) {
+                    debugTableRefresh();
+                }
+            }
+        ]
+    } );
 }
 
 let gauges = {};
 
 function refreshGauges(){
-    $.get("/current.csv", function(response) {
+    $.get("current.csv", function(response) {
         let data = $.csv.toObjects(response)[0];
 
         //==========================
@@ -397,8 +460,13 @@ function _refreshGauges(data){
 }
 
 $(document).ready(function() {
-    initTable($('#log'), "/logs/log.csv");
-    initTable($('#debug'), "/logs/debug.csv");
+    initLogTable();
+    initDebugTable();
     InitGauges();
     setInterval(refreshGauges, 5000); //refresh each 5 sec
+
+    $('#pills-log-tab').click(logTableRefresh);
+    $('#pills-debug-tab').click(debugTableRefresh);
+    $('#log_files').change(logTableRefresh);
+    $('#debug_files').change(debugTableRefresh);
 } );
