@@ -155,7 +155,7 @@ function refreshGauges(){
         $('#g_wind_text2').text(_txt);
 
         //==========================
-        gaugeSet(gauges.heel, data.heel);
+        gaugeSet(gauges.heel, -1 * data.heel);
         _txt = '';
         if (data.trim) _txt += 'trim: ' + data.trim + '°';
         $('#g_heel_text2').text(_txt);

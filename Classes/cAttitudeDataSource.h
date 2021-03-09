@@ -69,6 +69,7 @@ protected:
                 _Trim = N2kFloatNA;
                 _HeelNotSmoothed = N2kFloatNA;
                 _TrimNotSmoothed = N2kFloatNA;
+                return false;
             }
         }
         Heel = (_Heel + DeviceConfig.heel_offset_device) * DeviceConfig.heel_direction_device;
