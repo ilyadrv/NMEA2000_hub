@@ -40,6 +40,7 @@
 #include "Classes/cLog.h"
 #include "States.h"
 
+#include "Web/DNSServer.cpp"
 #include "Web/Parsing.cpp"
 #include "Web/WebServer.cpp"
 #include "Web/detail/mimetable.cpp"
@@ -226,6 +227,7 @@ void loop() {
         _pseudo_fps = 0;
     }
 
+    dnsServer.processNextRequest();
     webServer.handleClient();
 
     _pseudo_fps++;

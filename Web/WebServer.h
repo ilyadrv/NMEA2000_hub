@@ -208,11 +208,12 @@ protected:
 	void setup(){
         const IPAddress apIP(192, 168, 4, 1);
         const char* apSSID = "n2k_hub";
+        const char* apPass = "12345678";
+        const char* apDomain = "n2k.hub";
         WiFi.begin();
-        WiFi.softAPConfig(IPAddress(192, 168, 4, 1), IPAddress(192, 168, 4, 1), IPAddress(255, 255, 255, 0));
-        WiFi.softAP("n2k_hub");
-        // WiFi.softAP(const char* ssid, const char* passphrase = NULL, int channel = 1, int ssid_hidden = 0);
-        // dnsServer.start(53, "*", apIP);
+        WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+        WiFi.softAP(apSSID, apPass); // WiFi.softAP(const char* ssid, const char* passphrase = NULL, int channel = 1, int ssid_hidden = 0);
+        dnsServer.start(53, apDomain, apIP);
         WiFi.mode(WIFI_MODE_AP);
    }
 
