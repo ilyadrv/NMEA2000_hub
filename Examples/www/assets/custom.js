@@ -462,7 +462,7 @@ function InitGauges(){
     gauge.maxValue = 8;
     gauge.setMinValue(0);
     gauge.set(gauge.minValue);
-    gauge.animationSpeed = animationSpeed;
+    gauge.animationSpeed = 1;
     gauges.sog = gauge;
     refreshGauges();
 }

@@ -570,7 +570,11 @@ let _radToDeg = 57.295779513;
           angle: this.options.angle
         });
       }
-      this.value = Math.max(Math.min(value[value.length - 1], this.maxValue), this.minValue);
+      let _prev = this.value;
+      this.value = Math.max(Math.min(value[0], this.maxValue), this.minValue);
+      if (value.length == 2 && this.value == _prev){
+          this.value = Math.max(Math.min(value[1], this.maxValue), this.minValue);
+      }
       AnimationUpdater.add(this);
       AnimationUpdater.run(this.forceUpdate);
       return this.forceUpdate = false;
