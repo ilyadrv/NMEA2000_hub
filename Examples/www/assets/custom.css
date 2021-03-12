@@ -7,10 +7,10 @@ body{ padding:10px }
 .dataTable.compact th, .dataTable.compact td { padding-top: 6px; padding-bottom: 6px;}
 
 .pagination, .dataTables_info, .dataTables_length, .dataTables_filter, .dataTables_wrapper input,
-.dataTables_wrapper select, .dataTables_wrapper .btn {font-size:10px;}
+.dataTables_wrapper select, .dataTables_wrapper .btn {font-size:12px;}
 
 #pills-tab .nav-link { padding-top:2px; padding-bottom:2px}
-.dataTables_wrapper select {padding-top:2px; padding-bottom:2px; height: 20px !important}
+.dataTables_wrapper select, #gauge_refresh {padding-top:2px; padding-bottom:2px; height: 25px !important}
 
 .dataTables_filter, .dataTables_length {display:inline-block}
 .dt-buttons{ margin-left:20px; margin-right:20px}
@@ -47,4 +47,12 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
 
 .gauge_second_arrow{
     color: #00CCFF;
+}
+
+.g_na{
+    color: red;
+}
+
+.g_out_of_range{
+    color: #FF8C00
 }

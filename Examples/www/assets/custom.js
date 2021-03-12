@@ -190,13 +190,16 @@ function refreshGauges(){
 }
 
 function gaugeSet(gauge, val){
-    if (!val.length){
-        gauge.set(val);
+    let _parent = $("#"+gauge.canvas.id).closest('.gauge_cell');
+    _parent.find('.g_na').remove();
+    _parent.find('.g_out_of_range').remove();
+    val = parseFloat(val);
+    if (isNaN(val)){
+        gauge.set(gauge.minValue);
+        _parent.find('.gauge_label').hide();
+        _parent.find('.gauge_label').after($('<span class="g_na">N/A</span>'));
         return;
     }
-
-    let _parent = $("#"+gauge.canvas.id).closest('.gauge_cell');
-    _parent.find('.g_out_of_range').remove();
 
     if (val > gauge.maxValue || val < gauge.minValue){
         _parent.find('.gauge_label').hide();
@@ -205,6 +208,8 @@ function gaugeSet(gauge, val){
     else{
         _parent.find('.gauge_label').show();
     }
+
+//    let numVal = parseFloat(val);
     gauge.set(val);
 }
 
@@ -215,6 +220,8 @@ function InitGauges(){
                 strokeWidth: 0.013,
            };
     }
+
+    let animationSpeed = 128;
 
     //Weather
     let opts = {
@@ -244,6 +251,7 @@ function InitGauges(){
     gauge.maxValue = 1060;
     gauge.setMinValue(960);
     gauge.set(gauge.minValue);
+    gauge.animationSpeed = animationSpeed;
     gauges.air_p = gauge;
 
     //cog
@@ -306,6 +314,7 @@ function InitGauges(){
     gauge.maxValue = 30;
     gauge.setMinValue(0);
     gauge.set(gauge.minValue);
+    gauge.animationSpeed = animationSpeed;
     gauges.w_depth = gauge;
 
     //battery
@@ -330,6 +339,7 @@ function InitGauges(){
     gauge.maxValue = 100;
     gauge.setMinValue(0);
     gauge.set(gauge.minValue);
+    gauge.animationSpeed = animationSpeed;
     gauges.bat_charge = gauge;
 
     //wind
@@ -393,6 +403,7 @@ function InitGauges(){
     gauge.maxValue = 40;
     gauge.setMinValue(-40);
     gauge.set(gauge.minValue);
+    gauge.animationSpeed = animationSpeed;
     gauges.heel = gauge;
 
      //Polar
@@ -421,6 +432,7 @@ function InitGauges(){
     gauge.maxValue = 100;
     gauge.setMinValue(50);
     gauge.set(gauge.minValue);
+    gauge.animationSpeed = animationSpeed;
     gauges.polar = gauge;
 
     //SOG STW
@@ -450,6 +462,7 @@ function InitGauges(){
     gauge.maxValue = 8;
     gauge.setMinValue(0);
     gauge.set(gauge.minValue);
+    gauge.animationSpeed = animationSpeed;
     gauges.sog = gauge;
     refreshGauges();
 }
@@ -463,10 +476,18 @@ $(document).ready(function() {
     initLogTable();
     initDebugTable();
     InitGauges();
-    setInterval(refreshGauges, 5000); //refresh each 5 sec
+    let gaugeRefreshInterval = setInterval(refreshGauges, 5000); //refresh each 5 sec
 
     $('#pills-log-tab').click(logTableRefresh);
     $('#pills-debug-tab').click(debugTableRefresh);
     $('#log_files').change(logTableRefresh);
     $('#debug_files').change(debugTableRefresh);
+
+    $('#gauge_refresh').change(function(){
+        let val = parseInt($(this).val());
+        if (1 <= val && val <= 10){
+            clearInterval(gaugeRefreshInterval);
+            gaugeRefreshInterval = setInterval(refreshGauges, val * 1000);
+        }
+    });
 } );
