@@ -27,7 +27,7 @@
 </ul>
 <div class="tab-content" id="pills-tabContent">
   <div class="tab-pane fade show active" id="pills-live" role="tabpanel" aria-labelledby="pills-live-tab">
-    <div>
+    <div class="f10">
         Refresh:&nbsp;<select id="gauge_refresh" class="form-control form-control-sm f12" style="width:60px; display:inline-block">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -40,60 +40,57 @@
     <div class="container">
       <div class="row">
         <div class="col-sm gauge_cell">
-            <span id="g_air_p_text"  class="gauge_label"></span>&nbsp;hPa
+            <div><span id="g_air_p_text"  class="gauge_label"></span>&nbsp;hPa</div>
             <div id="g_air_p_text2" class="gauge_central_label"></div>
             <canvas id="g_air_p"></canvas>
             <div>Weather</div>
         </div>
         <div class="col-sm  gauge_cell">
-            <span id="g_cog_text" class="gauge_label"></span>&deg;
+            <div><span id="g_cog_text" class="gauge_label"></span>&deg;</div>
             <div id="g_cog_text2" class="gauge_central_label"></div>
             <canvas id="g_cog"></canvas>
             <div>COG/<span class="gauge_second_arrow">Head</span> (true)</div>
         </div>
         <div class="col-sm gauge_cell">
-            <span id="g_w_depth_text"  class="gauge_label"></span>&nbsp;m
+            <div><span id="g_w_depth_text"  class="gauge_label"></span>&nbsp;m</div>
             <div id="g_w_depth_text2" class="gauge_central_label2"></div>
             <canvas id="g_w_depth"></canvas>
             <div>Depth</div>
         </div>
         <div class="col-sm gauge_cell">
-            <span id="g_bat_charge_text"  class="gauge_label"></span>&nbsp;%
+            <div><span id="g_bat_charge_text"  class="gauge_label"></span>&nbsp;%</div>
             <div id="g_bat_charge_text2" class="gauge_central_label2"></div>
             <canvas id="g_bat_charge"></canvas>
             <div>Battery</div>
         </div>
-      </div>
-
-      <div class="row" style="margin-top:50px">
         <div class="col-sm  gauge_cell">
-            <span id="g_wind_text" class="gauge_label"></span>&deg;
+            <div><span id="g_wind_text" class="gauge_label"></span>&deg;</div>
             <div id="g_wind_text3" class="gauge_central_label2"></div>
             <div id="g_wind_text2" class="gauge_central_label"></div>
             <canvas id="g_wind"></canvas>
             <div>AW/<span class="gauge_second_arrow">TW</span></div>
         </div>
         <div class="col-sm  gauge_cell">
-            <span id="g_heel_text" class="gauge_label"></span>&deg;
+            <div><span id="g_heel_text" class="gauge_label"></span>&deg;</div>
             <div id="g_heel_text2" class="gauge_central_label2"></div>
             <canvas id="g_heel"></canvas>
             <div>Heel</div>
         </div>
         <div class="col-sm  gauge_cell">
-            <span id="g_polar_text" class="gauge_label"></span>%
+            <div><span id="g_polar_text" class="gauge_label"></span>%</div>
             <div id="g_polar_text2" class="gauge_central_label2"></div>
             <canvas id="g_polar"></canvas>
             <div>Boat/Polar</div>
         </div>
         <div class="col-sm  gauge_cell">
-            <span id="g_sog_text" class="gauge_label"></span>&nbsp;kn
+            <div><span id="g_sog_text" class="gauge_label"></span>&nbsp;kn</div>
             <div id="g_sog_text2" class="gauge_central_label"></div>
             <canvas id="g_sog"></canvas>
             <div>SOG/<span class="gauge_second_arrow">STW</span></div>
         </div>
       </div>
     </div>
-      <hr>
+    <hr style="margin-top:0px;">
     <div class="container">
       <div class="row">
         <div class="col-sm">

@@ -38,6 +38,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
 
 .gauge_cell{
     text-align:center;
+    margin-bottom:30px;
 }
 
 .gauge_cell > canvas{
@@ -56,3 +57,4 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: st
 .g_out_of_range{
     color: #FF8C00
 }
+c
