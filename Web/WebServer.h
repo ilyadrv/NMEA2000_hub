@@ -262,6 +262,7 @@ public:
         });
 
         serveStatic("/logs/", SD, "/logs/");
+        serveStatic("/", SD, "/www/index.html");
         serveStatic("/", SD, "/www/");
         onNotFound([&]() {
           send(200, "text/html", "<a href='/index.html'>GO HOME</a>");
