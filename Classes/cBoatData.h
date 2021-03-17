@@ -52,21 +52,21 @@ public:
     cEnvDataSource Env;
 
     //must be called only once at startup
-    void Init(cConfig &Config){
+    void Init(){
         //must go first. This sets up N2K "client", known messages, callbacks etc
         cN2K::Init();
         //this init each data source; order maters
-        Gps.InitDataSource(Config);
-        Heading.InitDataSource(Config, &Gps, &Attitude);
-        Water.InitDataSource(Config);
-        Wind.InitDataSource(Config, &Gps, &Heading);
-        Battery.InitDataSource(Config,1);
-        Trip.InitDataSource(Config);
-        Rudder.InitDataSource(Config);
-        Navigation.InitDataSource(Config, &Gps);
-        Attitude.InitDataSource(Config);
-        Polar.InitDataSource(Config, &Wind, &Water);
-        Env.InitDataSource(Config);
+        Gps.InitDataSource();
+        Heading.InitDataSource(&Gps, &Attitude);
+        Water.InitDataSource();
+        Wind.InitDataSource(&Gps, &Heading);
+        Battery.InitDataSource(1);
+        Trip.InitDataSource();
+        Rudder.InitDataSource();
+        Navigation.InitDataSource(&Gps);
+        Attitude.InitDataSource();
+        Polar.InitDataSource(&Wind, &Water);
+        Env.InitDataSource();
     }
 
     // must be called in the loop. This should go fast - without timer.
@@ -74,6 +74,10 @@ public:
     void Refresh(){
         //must go first. This actually updates global var SavedN2kMessages.
         TimeRefreshN2K = millis(); NMEA2000.ParseMessages(); TimeRefreshN2K = millis() - TimeRefreshN2K;
+        if (millis() -  cN2K::lastCollect > 5000){
+            cN2K::lastCollect = millis();
+            cN2K::Init();
+        }
         // actually will parse saved messages; order maters
         TimeRefreshGps = millis(); Gps.RefreshData(); TimeRefreshGps = millis() - TimeRefreshGps;
         TimeRefreshHeading = millis(); Heading.RefreshData(); TimeRefreshHeading = millis() - TimeRefreshHeading;

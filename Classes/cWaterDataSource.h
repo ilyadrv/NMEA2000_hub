@@ -22,7 +22,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.water_datasource;
+        DataSourceConfig = &DeviceConfig.water_datasource;
     }
 
     bool RefreshDataFromN2k(){
@@ -65,7 +65,7 @@ protected:
     }
 
     void OneSecProcessData(){
-        if (STWValid() && GlobalConfig.min_move_speed < STW){
+        if (STWValid() && DeviceConfig.min_move_speed < STW){
             AvgSTW = (_AvgSTWPoints == 0)
                 ? AvgSTW = STW
                 : (AvgSTW * _AvgSTWPoints + STW) / (_AvgSTWPoints + 1);

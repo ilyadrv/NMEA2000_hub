@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>N2K hub</title>
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/custom.css"/>
+    <script type="text/javascript" src="assets/datatables.min.js"></script>
+    <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/jquery-csv.js"></script>
+    <script src="assets/gauge/gauge.js"></script>
+    <script type="text/javascript" src="assets/custom.js"></script>
+</head>
+<body>
+
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="pills-live-tab" data-toggle="pill" href="#pills-live" role="tab" aria-controls="pills-live" aria-selected="true">Live</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pills-log-tab" data-toggle="pill" href="#pills-log" role="tab" aria-controls="pills-log" aria-selected="false">Log</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pills-debug-tab" data-toggle="pill" href="#pills-debug" role="tab" aria-controls="pills-debug" aria-selected="false">Debug</a>
+  </li>
+</ul>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pills-live" role="tabpanel" aria-labelledby="pills-live-tab">
+    <div class="f10">
+        Refresh:&nbsp;<select id="gauge_refresh" class="form-control form-control-sm f12" style="width:60px; display:inline-block">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+        </select>&nbsp;sec
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm gauge_cell">
+            <div><span id="g_air_p_text"  class="gauge_label"></span>&nbsp;hPa</div>
+            <div id="g_air_p_text2" class="gauge_central_label"></div>
+            <canvas id="g_air_p"></canvas>
+            <div>Weather</div>
+        </div>
+        <div class="col-sm  gauge_cell">
+            <div><span id="g_cog_text" class="gauge_label"></span>&deg;</div>
+            <div id="g_cog_text2" class="gauge_central_label"></div>
+            <canvas id="g_cog"></canvas>
+            <div>COG/<span class="gauge_second_arrow">Head</span> (true)</div>
+        </div>
+        <div class="col-sm gauge_cell">
+            <div><span id="g_w_depth_text"  class="gauge_label"></span>&nbsp;m</div>
+            <div id="g_w_depth_text2" class="gauge_central_label2"></div>
+            <canvas id="g_w_depth"></canvas>
+            <div>Depth</div>
+        </div>
+        <div class="col-sm gauge_cell">
+            <div><span id="g_bat_charge_text"  class="gauge_label"></span>&nbsp;%</div>
+            <div id="g_bat_charge_text2" class="gauge_central_label2"></div>
+            <canvas id="g_bat_charge"></canvas>
+            <div>Battery</div>
+        </div>
+        <div class="col-sm  gauge_cell">
+            <div><span id="g_wind_text" class="gauge_label"></span>&deg;</div>
+            <div id="g_wind_text3" class="gauge_central_label2"></div>
+            <div id="g_wind_text2" class="gauge_central_label"></div>
+            <canvas id="g_wind"></canvas>
+            <div>AW/<span class="gauge_second_arrow">TW</span></div>
+        </div>
+        <div class="col-sm  gauge_cell">
+            <div><span id="g_heel_text" class="gauge_label"></span>&deg;</div>
+            <div id="g_heel_text2" class="gauge_central_label2"></div>
+            <canvas id="g_heel"></canvas>
+            <div>Heel</div>
+        </div>
+        <div class="col-sm  gauge_cell">
+            <div><span id="g_polar_text" class="gauge_label"></span>%</div>
+            <div id="g_polar_text2" class="gauge_central_label2"></div>
+            <canvas id="g_polar"></canvas>
+            <div>Boat/Polar</div>
+        </div>
+        <div class="col-sm  gauge_cell">
+            <div><span id="g_sog_text" class="gauge_label"></span>&nbsp;kn</div>
+            <div id="g_sog_text2" class="gauge_central_label"></div>
+            <canvas id="g_sog"></canvas>
+            <div>SOG/<span class="gauge_second_arrow">STW</span></div>
+        </div>
+      </div>
+    </div>
+    <hr style="margin-top:0px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+            <ul class="data_src">
+                <li>GPS: <span id="gps_src"></span></li>
+                <li>Heading: <span id="head_src"></span></li>
+                <li>Attitude: <span id="att_src"></span></li>
+            </ul>
+        </div>
+        <div class="col-sm" id="coordinates">
+            <ul class="the_coordinates">
+                <li>Lat: <span id="gps_lat"></span></li>
+                <li>Lon: <span id="gps_lon"></span></li>
+            </ul>
+        </div>
+        <div class="col-sm">
+            <ul class="the_time">
+                <li>Time: <span id="device_time"></span></li>
+                <li>GPS time: <span id="gps_time"></span></li>
+                <li>Uptime: <span id="uptime"></span></li>
+            </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="tab-pane fade" id="pills-log" role="tabpanel" aria-labelledby="pills-log-tab">
+        <select id="log_files" class="form-control form-control-sm f12" style="width:150px"></select><br/>
+        <table id="log" class="table table-striped table-bordered compact f12" style="width:100%">
+        <thead>
+            <tr>
+                <th>time</th>
+                <th>uptime</th>
+                <th>lat</th>
+                <th>lon</th>
+                <th>sog</th>
+                <th>cog</th>
+                <th>mcog</th>
+                <th>varia</th>
+                <th>alt</th>
+                <th>gps_time</th>
+                <th>gps_src</th>
+                <th>avg_sog</th>
+                <th>stw</th>
+                <th>w_depth</th>
+                <th>w_temp</th>
+                <th>avg_stw</th>
+                <th>aws</th>
+                <th>tws</th>
+                <th>awa</th>
+                <th>twa</th>
+                <th>twd</th>
+                <th>max_aws</th>
+                <th>max_tws</th>
+                <th>head_t</th>
+                <th>head_m</th>
+                <th>head_var</th>
+                <th>head_src</th>
+                <th>rud</th>
+                <th>polar_stw</th>
+                <th>polar_avg</th>
+                <th>boat_to_polar</th>
+                <th>boat_to_polar_avg</th>
+                <th>bat_volt</th>
+                <th>bat_cur</th>
+                <th>pow_used</th>
+                <th>bat_temp</th>
+                <th>bat_charge</th>
+                <th>bat_charging</th>
+                <th>nav_xte</th>
+                <th>nav_wp_distance</th>
+                <th>nav_eta</th>
+                <th>nav_wp_bearing_t</th>
+                <th>nav_wp_bearing_m</th>
+                <th>nav_dest_lat</th>
+                <th>nav_dest_lon</th>
+                <th>nav_wp_vmg</th>
+                <th>heel</th>
+                <th>trim</th>
+                <th>max_heel</th>
+                <th>max_trim</th>
+                <th>att_src</th>
+                <th>air_t</th>
+                <th>air_h</th>
+                <th>air_p</th>
+            </tr>
+        </thead>
+</table>
+  </div>
+  <div class="tab-pane fade" id="pills-debug" role="tabpanel" aria-labelledby="pills-debug-tab">
+        <select id="debug_files" class="form-control form-control-sm f10" style="width:150px"></select><br/>
+        <table id="debug" class="table table-striped table-bordered compact f12" style="width:100%">
+        <thead>
+            <tr>
+                <th>dev_time</th>
+                <th>uptime</th>
+                <th>pseudo_fps</th>
+                <th>free_heap</th>
+                <th>min_free_heap</th>
+                <th>pgns</th>
+                <th>refresh_n2k</th>
+                <th>refresh_gps</th>
+                <th>refresh_heading</th>
+                <th>refresh_water</th>
+                <th>refresh_wind</th>
+                <th>refresh_battery</th>
+                <th>refresh_trip</th>
+                <th>refresh_rudder</th>
+                <th>refresh_navigation</th>
+                <th>refresh_attitude</th>
+                <th>refresh_polar</th>
+                <th>refresh_env</th>
+                <th>send_gps</th>
+                <th>send_battery</th>
+                <th>send_attitude</th>
+                <th>send_heading</th>
+                <th>send_env</th>
+            </tr>
+        </thead>
+</table>
+  </div>
+</div>
+
+
+</body>
+</html>

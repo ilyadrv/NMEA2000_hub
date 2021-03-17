@@ -10,6 +10,7 @@ protected:
     static tSavedN2kMessage *SavedMessages;
 
 public:
+    static unsigned long lastCollect;
     static String allN2kPGNs;
 
     static void Init(){
@@ -70,6 +71,7 @@ public:
     // if message in missing in N2K the previous obe will be kept
     // to stabilize data aquizition
     static void CollectMessages(const tN2kMsg &N2kMsg) {
+        cN2K::lastCollect = millis();
         int i = 0;
         for (i=0; SavedMessages[i].PGN!=0 && !(N2kMsg.PGN==SavedMessages[i].PGN); i++);
         if (SavedMessages[i].PGN!=0) {
@@ -104,3 +106,4 @@ public:
 //init static
 String cN2K::allN2kPGNs = "";
 cN2K::tSavedN2kMessage *cN2K::SavedMessages = (cN2K::tSavedN2kMessage *) malloc(32 * sizeof(cN2K::tSavedN2kMessage));
+unsigned long cN2K::lastCollect = millis();

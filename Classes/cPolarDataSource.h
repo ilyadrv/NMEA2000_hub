@@ -8,8 +8,8 @@ public:
         BoatToPolar = N2kUInt8NA, //percentage relation boat speed tp polar predict
         BoatToPolarAvg = N2kUInt8NA;
 
-    bool STWValid(){ return (GlobalConfig.polar_stw_min < STW && STW < 100);}
-    bool AvgSTWValid(){ return (GlobalConfig.polar_stw_min < AvgSTW && AvgSTW < 100);}
+    bool STWValid(){ return (DeviceConfig.polar_stw_min < STW && STW < 100);}
+    bool AvgSTWValid(){ return (DeviceConfig.polar_stw_min < AvgSTW && AvgSTW < 100);}
     bool BoatToPolarValid(){ return (0 < BoatToPolar && BoatToPolar < 200);} //if we are 2 times faster polars that's bad STW or bad polars
     bool BoatToPolarAvgValid(){ return (0 < BoatToPolarAvg && BoatToPolarAvg < 200);}
 
@@ -18,8 +18,8 @@ public:
     String BoatToPolarStr(){ return BoatToPolarValid() ? String(BoatToPolar) : EmptyValue;}
     String BoatToPolarAvgStr(){ return BoatToPolarAvgValid() ? String(BoatToPolarAvg) : EmptyValue;}
 
-    void InitDataSource(cConfig &Config, cWindDataSource *_wind, cWaterDataSource *_water){
-        cDataSource::InitDataSource(Config);
+    void InitDataSource(cWindDataSource *_wind, cWaterDataSource *_water){
+        cDataSource::InitDataSource();
         Wind = _wind;
         Water = _water;
         LoadPolars();
@@ -42,7 +42,7 @@ protected:
     };
     struct tPolarLine{
         int tws = 0, points_num = 0;
-        tPolarPoint points[polar_twa_max - polar_twa_min + 1];
+        tPolarPoint *points;
     };
     struct tPolars{
         tPolarLine lines[polar_tws_max - polar_tws_min + 1];
@@ -126,6 +126,9 @@ protected:
                     polars.lines_num++;
                     polars.lines[line].tws = (int) json_buffer["polars"][line][0];
                     for (int point = 0; point <= polar_twa_max - polar_twa_min; point++){
+                        if (point == 0){
+                            polars.lines[line].points = (tPolarPoint *) malloc((polar_twa_max - polar_twa_min + 1) * sizeof(tPolarPoint));
+                        }
                         if (!json_buffer["polars"][line][1][point][0]){break;} //reach the end of point in line
                         if (json_buffer["polars"][line][1][point][1] > 0.5){ // because this is floats we assuming empty everything less 0.5
                             polars.lines[line].points[point].twa = (int) json_buffer["polars"][line][1][point][0];
@@ -150,7 +153,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.polar_datasource;
+        DataSourceConfig = &DeviceConfig.polar_datasource;
     }
 
     bool RefreshDataFromDevice(){

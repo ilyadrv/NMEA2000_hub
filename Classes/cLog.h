@@ -1,13 +1,11 @@
 class cLog{
-protected:
-    static unsigned long timer;  // Time for log writing
-    static String _last_pgns;
-    static long Now;
-    static cBoatData *Data;
-    static cConfig *Config;
+
+public:
+    static String lastBoatData;
 
     static String boat_data_csv_headers(){
-        return String("time, uptime,")
+        //IMPORTANT! no spaces in headers. Or web display will not work.
+        return String("time,uptime,")
             + "lat,lon,sog,cog,mcog,varia,alt,gps_time,gps_src,avg_sog,"
             + "stw,w_depth,w_temp,avg_stw,"
             + "aws,tws,awa,twa,twd,max_aws,max_tws,"
@@ -17,8 +15,43 @@ protected:
             + "bat_volt,bat_cur,pow_used,bat_temp,bat_charge,bat_charging,"
             + "nav_xte,nav_wp_distance,nav_eta,nav_wp_bearing_t,nav_wp_bearing_m,nav_dest_lat,nav_dest_lon,nav_wp_vmg,"
             + "heel,trim,max_heel,max_trim,att_src,"
-            + "air_t, air_h, air_p";
+            + "air_t,air_h,air_p";
     }
+
+    static String logFiles(){
+        File dir = SD.open("/logs");
+        if (dir) {
+            DynamicJsonDocument _doc(10 * 1024);
+            unsigned char l = 0;
+            unsigned char d = 0;
+            String result;
+            while (true) {
+                File entry =  dir.openNextFile();
+                if (!entry) break;
+                if (!entry.isDirectory()) {
+                    String _name = String(entry.name());
+                    if (_name.startsWith("/logs/log_") && l < 100){
+                        _doc["log"][l++] = _name;
+                    }
+                    else if (_name.startsWith("/logs/debug_") && d < 100){
+                        _doc["debug"][d++] = _name;
+                    }
+                }
+            }
+            serializeJson(_doc, result);
+            return result;
+        }
+        else{
+            return String("{}");
+        }
+    }
+
+protected:
+    static unsigned long timer;  // Time for log writing
+    static String _last_pgns;
+    static long Now;
+    static cBoatData *Data;
+    static cConfig *Config;
 
     static String boat_data_to_csv(){
         String _result =
@@ -151,8 +184,7 @@ public:
             timer = millis();
             //get date based file name
             //file per day strategy
-            String filename = String("/logs/log_") + Config->boat_name + "_" + Data->Gps.TimeStr(Now, "%Y-%m-%d") + ".csv";
-            filename.toLowerCase();
+            String filename = String("/logs/log_") + Data->Gps.TimeStr(Now, "%Y-%m-%d") + ".csv";
 
             bool _fileExists = SD.exists(filename);
             File _log_file = SD.open(filename, FILE_WRITE);
@@ -163,7 +195,8 @@ public:
             else{
                 _log_file.println(boat_data_csv_headers()); //csv headers
             }
-            _bytes_written = _log_file.println(boat_data_to_csv());
+            lastBoatData = boat_data_to_csv();
+            _bytes_written = _log_file.println(lastBoatData);
             _log_file.close();
             result = (_bytes_written > 5); //some bytes written?
             log_debug();
@@ -173,6 +206,7 @@ public:
 };
 unsigned long cLog::timer = 0;
 String cLog::_last_pgns = "";
+String cLog::lastBoatData = "";
 long cLog::Now = 0;
 cBoatData *cLog::Data = (cBoatData *) malloc(sizeof(cBoatData));
 cConfig *cLog::Config = (cConfig *) malloc(sizeof(cConfig));
