@@ -1,0 +1,60 @@
+body{ padding:10px }
+.f8 {font-size:8px !important;}
+.f9 {font-size:9px !important;}
+.f10 {font-size:10px !important;}
+.f11 {font-size:11px !important;}
+.f12 {font-size:12px !important;}
+.dataTable.compact th, .dataTable.compact td { padding-top: 6px; padding-bottom: 6px;}
+
+.pagination, .dataTables_info, .dataTables_length, .dataTables_filter, .dataTables_wrapper input,
+.dataTables_wrapper select, .dataTables_wrapper .btn {font-size:12px;}
+
+#pills-tab .nav-link { padding-top:2px; padding-bottom:2px}
+.dataTables_wrapper select, #gauge_refresh {padding-top:2px; padding-bottom:2px; height: 25px !important}
+
+.dataTables_filter, .dataTables_length {display:inline-block}
+.dt-buttons{ margin-left:20px; margin-right:20px}
+div.dataTables_wrapper div.dataTables_paginate ul.pagination{justify-content: start; !important}
+
+.gauge_central_label{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -60%);
+    font-size:10px;
+    white-space: nowrap;
+}
+
+.gauge_central_label2{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -35%);
+    font-size:10px;
+    white-space: nowrap;
+}
+
+.gauge_cell{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.gauge_cell > canvas{
+    width: 250px;
+    height: 150px;
+}
+
+.gauge_second_arrow{
+    color: #00CCFF;
+}
+
+.g_na{
+    color: red;
+}
+
+.g_out_of_range{
+    color: #FF8C00
+}
+c

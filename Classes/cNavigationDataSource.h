@@ -32,10 +32,10 @@ public:
     String DestinationLongitudeDecStr(){ return DestinationLongitudeValid() ? String(DestinationLongitude, 6) : EmptyValue;}
     String VMGToWPStr(){ return VMGToWPValid() ? String(VMGToWP, 1) : EmptyValue;}
 
-    long ETASec(){ return ETAValid() ? ETADate * 3600 * 24 + ETATime + GlobalConfig.gps_time_offset_minutes * 60 : 0;}
+    long ETASec(){ return ETAValid() ? ETADate * 3600 * 24 + ETATime + DeviceConfig.gps_time_offset_minutes * 60 : 0;}
 
-    void InitDataSource(cConfig &Config, cGpsDataSource *_gps){
-        cDataSource::InitDataSource(Config);
+    void InitDataSource(cGpsDataSource *_gps){
+        cDataSource::InitDataSource();
         Gps = _gps;
     }
 
@@ -45,7 +45,7 @@ protected:
 //================================= FROM BASIC CLASS
 protected:
     void SetDataSourceConfig(){
-        DataSourceConfig = GlobalConfig.navigation_datasource;
+        DataSourceConfig = &DeviceConfig.navigation_datasource;
     }
 
     bool RefreshDataFromN2k(){

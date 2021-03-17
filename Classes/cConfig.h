@@ -65,8 +65,13 @@ public:
     timezone
         tz = {0,0}; //timezone to set up device local time
     String
+        wifi_ssid = "n2k_hub",
+        wifi_ip = "192.168.1.4",
+        wifi_pass = "12345678",
+        wifi_domain = "n2k.hub",
         boat_name = ""; //used for the log file name. Do not put weird things here
     bool
+        wifi_disabled = false,
         gps_warn = true, //enable GPS alarm in status bar
         depth_warn = true,  //enable DEPTH alarm in status bar
         highlight_local_gps = false, //highlight field if GPS data is from local device, not from N2K
@@ -144,6 +149,12 @@ public:
                 if (json_buffer["heading_compass_device_offset_yam"]){heading_compass_device_offset_yam = (double)json_buffer["heading_compass_device_offset_yam"];}
                 heading_compass_calibration_reset = (bool) json_buffer["heading_compass_calibration_reset"];
                 heading_compass_calibrate = (bool) json_buffer["heading_compass_calibrate"];
+
+                wifi_disabled = (bool) json_buffer["wifi_disabled"];
+                if (json_buffer["wifi_ssid"]) wifi_ssid = json_buffer["wifi_ssid"].as<String>();
+                if (json_buffer["wifi_ip"]) wifi_ip = json_buffer["wifi_ip"].as<String>();
+                if (json_buffer["wifi_pass"]) wifi_pass = json_buffer["wifi_pass"].as<String>();
+                if (json_buffer["wifi_domain"]) wifi_domain = json_buffer["wifi_domain"].as<String>();
 
                 for (int i = 0; i<2; i++){
                     if (json_buffer["battery"] && json_buffer["battery"][i]){

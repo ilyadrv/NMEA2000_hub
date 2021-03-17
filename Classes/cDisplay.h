@@ -684,11 +684,11 @@ protected:
 
         M5.Lcd.setTextColor(txt_col_main);
         String _str_time = "------------";
-        if(BoatData.Gps.TimeValid()){
-            _str_time = BoatData.Gps.TimeStr();
-            if (BoatData.Gps.SourceDevice()) _str_time += "*";
+        if(BoatData.Gps.TimeValid(DeviceState.Time)) {
+            _str_time = BoatData.Gps.TimeStr(DeviceState.Time);
+            if(!BoatData.Gps.TimeValid()) _str_time += "**";
+            else if (BoatData.Gps.SourceDevice()) _str_time += "*";
         }
-        else if(BoatData.Gps.TimeValid(DeviceState.Time)) _str_time = BoatData.Gps.TimeStr(DeviceState.Time) + "**";
         else M5.Lcd.setTextColor(bg_alarm);
         M5.Lcd.setTextSize(1);
         M5.Lcd.setFont(FSS9);

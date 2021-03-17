@@ -5,7 +5,7 @@
 #define ESP32_CAN_TX_PIN GPIO_NUM_2
 #define ESP32_CAN_RX_PIN GPIO_NUM_35
 
-// So M5Stack wil include acceleration/Gyro unit
+// So M5Stack will include acceleration/Gyro unit
 #define M5STACK_MPU6886
 
 #include <M5Stack.h>
@@ -20,6 +20,10 @@
 #include <SD.h>
 #include <SPI.h>
 #include <Free_Fonts.h>
+
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <WiFiClient.h>
 
 #include "AMeter/ammeter.cpp"
 #include "VMeter/voltmeter.cpp" //vmeter shares some ameter definitions, because ameter hardware has the  same vmeter chip inside
@@ -36,19 +40,28 @@
 #include "Classes/cLog.h"
 #include "States.h"
 
+#include "Web/DNSServer.cpp"
+#include "Web/Parsing.cpp"
+#include "Web/WebServer.cpp"
+#include "Web/detail/mimetable.cpp"
+
+
 bool _logoShown = false;
 
 //============= Timers
 unsigned long
     t = 0,  // Timer for 1 sec events
     t2 = 0,  // Time for 10sec events
-    t_loopPages = 0; //timer for page loop
+    t_loopPages = 0, //timer for page loop
+    t_last_gps_time_sync = 0; //sync device time with gps
 
 //============= Misc
 void ManageDeviceTime() {
     struct timeval tv;
     const timezone *tz = &DeviceConfig.tz;
-    if (!BoatData.Gps.TimeValid(DeviceState.Time) && BoatData.Gps.TimeValid()){
+    //sync with gps each 10 minutes if possible
+    if (BoatData.Gps.TimeValid() && (!BoatData.Gps.TimeValid(DeviceState.Time) || millis() - t_last_gps_time_sync > 15 * 60000)){
+        t_last_gps_time_sync = millis();
         timeval epoch = {BoatData.Gps.Time(), 0};
         const timeval *tv = &epoch;
         settimeofday(tv, tz);
@@ -107,10 +120,15 @@ void setup() {
     load_state(); // recover last shutdown state
 
     //Init boat data
-    BoatData.Init(DeviceConfig);
+    BoatData.Init();
 
     //Init logs
     cLog::Init(&BoatData, &DeviceConfig);
+
+    //init WiFi and web server
+    if (!DeviceConfig.wifi_disabled){
+        webServer.startWebServer(DeviceConfig.wifi_ssid, DeviceConfig.wifi_ip, DeviceConfig.wifi_pass, DeviceConfig.wifi_domain );
+    }
 }
 
 void loop() {
@@ -167,8 +185,9 @@ void loop() {
 
 //==================== Managing DATA
 
-   BoatData.Refresh();
-   BoatData.SendToN2K();
+    BoatData.Refresh();
+    BoatData.SendToN2K();
+    ManageDeviceTime();
 
 //===================== UI
     if (millis() > t_loopPages + DeviceConfig.loop_page_speed * 1000) {
@@ -180,7 +199,6 @@ void loop() {
         t = millis();
 
         //order is important
-        ManageDeviceTime();
         if (BoatData.Gps.CoordinatesValid() && BoatData.Gps.TimeValid() && !BoatData.Gps.PositionValid(BoatData.StartupPosition)){
             BoatData.StartupPosition = BoatData.Gps.Data();
         }
@@ -210,5 +228,13 @@ void loop() {
         if (SD_Present) MainDisplay.LogFileError = !cLog::Log(DeviceState.Time);
         _pseudo_fps = 0;
     }
+
+    if (!DeviceConfig.wifi_disabled){
+        dnsServer.processNextRequest();
+        webServer.handleClient();
+    }
+
     _pseudo_fps++;
 }
+
+
