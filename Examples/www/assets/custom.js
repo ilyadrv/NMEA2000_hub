@@ -119,40 +119,32 @@ function refreshGauges(){
         $('#g_w_depth_text2').text(_txt);
 
         //==========================
-        data.cog = Math.round(data.cog);
-        let heading;
-        if (data.head_t){
-            data.head_t = Math.round(data.head_t);
-            gauges.cog.set([data.cog, data.head_t]);
-            $('#g_cog_text').html(data.cog + '/<span class="gauge_second_arrow">' + data.head_t + '</span>');
+        if (!data.cog || !data.head_t){
+            data.cog = data.head_t = '---';
         }
         else{
-            gauges.cog.set(data.cog);
-            $('#g_cog_text').text(data.cog);
+            data.cog = Math.round(data.cog);
+            data.head_t = Math.round(data.head_t);
         }
-        _txt = '';
-        //if (data.mcog) _txt += Math.round(data.mcog) + '°M; '; //knowing variation is enought
-        if (data.varia) _txt += data.varia + '° var';
-        $('#g_cog_text2').text(_txt);
+        gauges.cog.set([data.cog, data.head_t]);
+        $('#g_cog_text').html(data.cog + '/<span class="gauge_second_arrow">' + data.head_t + '</span>');
+
 
         //==========================
         gaugeSet(gauges.bat_charge, data.bat_charge);
         $('#g_bat_charge_text2').text(data.bat_volt + 'V; ' + data.bat_cur + 'A; '  + data.pow_used + 'w/h' );
 
         //==========================
-        if (data.twa){
-            gauges.wind.set([data.awa, data.twa]);
-            $('#g_wind_text').html(Math.abs(data.awa) + '/<span class="gauge_second_arrow">' + Math.abs(data.twa) + '</span>');
-            $('#g_wind_text3').html(data.aws + '/<span class="gauge_second_arrow">' + data.tws + '</span>kn');
+        let _abs_awa = Math.abs(data.awa);
+        let _abs_twa = Math.abs(data.twa);
+        if (!data.awa || !data.twa){
+            data.awa = data.twa = _abs_awa = _abs_twa = '---';
         }
-        else{
-            gauges.cog.set(data.awa);
-            $('#g_wind_text').text(Math.abs(data.awa));
-            $('#g_wind_text3').html(data.aws);
-        }
-        _txt = '';
-        if (data.twd) _txt += data.twd + '°';
-        $('#g_wind_text2').text(_txt);
+        gauges.wind.set([data.awa, data.twa]);
+        $('#g_wind_text').html(_abs_awa + '/<span class="gauge_second_arrow">' + _abs_twa + '</span>');
+        $('#g_wind_text3').html(data.aws + '/<span class="gauge_second_arrow">' + data.tws + '</span>kn');
+        if (data.twd) $('#g_wind_text2').text(data.twd + '°');
+        else $('#g_wind_text2').text('');
 
         //==========================
         gaugeSet(gauges.heel, -1 * data.heel);
@@ -165,14 +157,11 @@ function refreshGauges(){
         $('#g_polar_text2').html('boat/polar<br>' + data.stw + '/' + data.polar_stw);
 
         //==========================
-        if (data.stw){
-            gauges.sog.set([data.sog, data.stw]);
-            $('#g_sog_text').html(data.sog + '/<span class="gauge_second_arrow">' + data.stw + '</span>');
+        if(!data.sog || !data.stw){
+           data.sog = data.stw = '---';
         }
-        else{
-            gauges.sog.set(data.sog);
-            $('#g_sog_text').text(data.stw);
-        }
+        gauges.sog.set([data.sog, data.stw]);
+        $('#g_sog_text').html(data.sog + '/<span class="gauge_second_arrow">' + data.stw + '</span>');
         if (data.polar_stw) {
             $('#g_sog_text2').html('<br>polar:<br>' + data.polar_stw + 'kn; ' + data.boat_to_polar + '%');
         }
