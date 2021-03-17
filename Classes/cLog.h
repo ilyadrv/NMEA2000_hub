@@ -30,13 +30,10 @@ public:
                 if (!entry) break;
                 if (!entry.isDirectory()) {
                     String _name = String(entry.name());
-                    _debug(_name);
                     if (_name.startsWith("/logs/log_") && l < 100){
-                        _debug("1");
                         _doc["log"][l++] = _name;
                     }
                     else if (_name.startsWith("/logs/debug_") && d < 100){
-                        _debug("2");
                         _doc["debug"][d++] = _name;
                     }
                 }

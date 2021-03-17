@@ -126,7 +126,9 @@ void setup() {
     cLog::Init(&BoatData, &DeviceConfig);
 
     //init WiFi and web server
-    webServer.startWebServer();
+    if (!DeviceConfig.wifi_disabled){
+        webServer.startWebServer(DeviceConfig.wifi_ssid, DeviceConfig.wifi_ip, DeviceConfig.wifi_pass, DeviceConfig.wifi_domain );
+    }
 }
 
 void loop() {
@@ -227,8 +229,10 @@ void loop() {
         _pseudo_fps = 0;
     }
 
-    dnsServer.processNextRequest();
-    webServer.handleClient();
+    if (!DeviceConfig.wifi_disabled){
+        dnsServer.processNextRequest();
+        webServer.handleClient();
+    }
 
     _pseudo_fps++;
 }

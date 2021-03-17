@@ -14,7 +14,6 @@ void setup() {
     Serial.begin(9600);
 
     if (bmm.initialize() == BMM150_E_ID_NOT_CONFORM) {
-        Serial.println("Chip ID can not read!");
         while (1);
     } else {
         Serial.println("Initialize done!");

@@ -203,7 +203,6 @@ protected:
     void InitHardware(){
         bmm.initialize();
         if(bmm.initialize() == BMM150_E_ID_NOT_CONFORM) {
-            _debug("Chip ID can not read!");
             DeviceReinitMust = true;
         } else {
             _debug("Initialize done!");
