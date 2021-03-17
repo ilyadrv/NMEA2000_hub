@@ -20,12 +20,9 @@ Features:
 * Data log - daily json logs with all the data on SD card in CSV.
 * For developers. List of N2K messages and datasources can be easily expanded by developers. Modular OOP design. Performance log with N2K messages listing. Test mode.
 * Power consumption (M5stack + units) 110mA. Can be powered even from N2K directly
+* Wi-Fi web server (access point). Displays in browser near real time gauges, displays and exports log files. !!!Copy Examples/www folder to your SD card root. 
 * Budget < $100
 * And much more
-
-Planned:
-----------------
-* Wi-Fi web server to display data and edit config via browser.
 
 Software: 
 ----------------
@@ -72,6 +69,10 @@ N2k network\
 Your N2K power cable most probably has data wires which are not used.
 You can use them and save 1 T-connector\
 ![n2k_hum](Docs/images/n2k_hub_09.jpg)
+
+Web server via Wi-Fi access point\
+![config.json](Docs/images/n2k_hub_10.png)
+![pages.json](Docs/images/n2k_hub_11.png)
 
 Logs and configs\
 ![config.json](Docs/images/confgi_json.png)
