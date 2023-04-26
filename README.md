@@ -24,12 +24,18 @@ Features:
 * Budget < $100
 * And much more
 
-Software: 
+Libraries: 
 ----------------
-* M5Stack the Board Software https://docs.m5stack.com/#/en/arduino/arduino_home_page
-* Libraries NMEA2000, NMEA2000_esp32 from Timo Lappalainen: https://github.com/ttlappalainen (included in this repo)
-* For GPS unit library TinyGPSPlus and espsoftwareserial  from https://github.com/mikalhart/TinyGPSPlus,  https://github.com/jdollar/espsoftwareserial/ (included in this repo)
-* Some other third party code included
+* M5Stack board <= 1.0.9
+* NMEA2000 https://github.com/ttlappalainen/NMEA2000
+* NMEA2000_esp32 https://github.com/ttlappalainen/NMEA2000_esp32 
+* TinyGPSPlus https://github.com/mikalhart/TinyGPSPlus
+* GPS related lib https://github.com/jdollar/espsoftwareserial/
+* Time https://github.com/PaulStoffregen/Time
+* ArduinoJson https://github.com/bblanchon/ArduinoJson
+* WebServer - only one lib from https://github.com/espressif/arduino-esp32 
+
+They are also included in this repo. Check the Third-party folders.
 
 Hardware:
 ----------------

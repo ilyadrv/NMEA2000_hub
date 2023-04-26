@@ -79,7 +79,7 @@ protected:
         if (ParseN2kWindSpeed(cN2K::Message(130306), SID, WindSpeed, WindAngle, WindReference)){
             if (WindReference == N2kWind_Apparent) {
                 AWA= NormalizeDegree(WindAngle * radToDeg);
-                AWS=WindSpeed;
+                AWS=WindSpeed * msToKn;
                 AWASmoother.Smooth(&AWA);
                 AWSSmoother.Smooth(&AWS);
                 AWA=Degree360to180(AWA);

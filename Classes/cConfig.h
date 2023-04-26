@@ -42,7 +42,9 @@ public:
         heel_offset_device = 0,
         heel_offset_n2k = 0,
         trim_offset_device = 0,
-        trim_offset_n2k = 0;
+        trim_offset_n2k = 0,
+        heading_device_smoother_power = 50,
+        heading_device_smoother_interval = 10;
     unsigned char
         battery_low = 20, // min battery charge alarm, %
         n2k_address = 15; //n2k address in the bus do not change it unless there are device conflict
@@ -140,6 +142,8 @@ public:
                 if (json_buffer["heel_offset_n2k"]){heel_offset_n2k = (int)json_buffer["heel_offset_n2k"];}
                 if (json_buffer["trim_offset_device"]){trim_offset_device = (int)json_buffer["trim_offset_device"];}
                 if (json_buffer["trim_offset_n2k"]){trim_offset_n2k = (int)json_buffer["trim_offset_n2k"];}
+                if (json_buffer["heading_device_smoother_power"]){heading_device_smoother_power = (int)json_buffer["heading_device_smoother_power"];}
+                if (json_buffer["heading_device_smoother_interval"]){heading_device_smoother_interval = (int)json_buffer["heading_device_smoother_interval"];}
                 heel_direction_n2k = ((int)json_buffer["heel_direction_n2k"] == -1) ? -1 : 1;
                 heel_direction_device = ((int)json_buffer["heel_direction_device"] == -1) ? -1 : 1;
                 trim_direction_n2k = ((int)json_buffer["trim_direction_n2k"] == -1) ? -1 : 1;

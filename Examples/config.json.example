@@ -55,6 +55,8 @@
   "heading_compass_device_offset_roll": 0.0,
   "heading_compass_device_offset_pitch": 0.0,
   "heading_compass_device_offset_yam": 0.0,
+  "heading_device_smoother_power": 50,
+  "heading_device_smoother_interval": 10,
   "heading_compass_calibration_reset": false,
   "heading_compass_calibrate": true,
   "battery": [

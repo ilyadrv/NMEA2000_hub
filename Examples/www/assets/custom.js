@@ -119,16 +119,18 @@ function refreshGauges(){
         $('#g_w_depth_text2').text(_txt);
 
         //==========================
-        if (!data.cog || !data.head_t){
-            data.cog = data.head_t = '---';
+        if (!data.mcog || !data.head_m){
+            data.mcog = data.head_m = '---';
         }
         else{
-            data.cog = Math.round(data.cog);
-            data.head_t = Math.round(data.head_t);
+            data.mcog = Math.round(data.mcog);
+            data.head_m = Math.round(data.head_m);
         }
-        gauges.cog.set([data.cog, data.head_t]);
-        $('#g_cog_text').html(data.cog + '/<span class="gauge_second_arrow">' + data.head_t + '</span>');
-
+        gauges.cog.set([data.mcog, data.head_m]);
+        $('#g_cog_text').html(data.mcog + '/<span class="gauge_second_arrow">' + data.head_m + '</span>');
+        _txt = '';
+        if (data.varia) _txt += 'var: ' + data.varia + '°';
+        $('#g_cog_text2').text(_txt);
 
         //==========================
         gaugeSet(gauges.bat_charge, data.bat_charge);

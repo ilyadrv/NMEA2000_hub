@@ -33,6 +33,16 @@ public:
         mag_min.x = prefs.getFloat("h.mag_min.x", 2000);
         mag_min.y = prefs.getFloat("h.mag_min.y", 2000);
         mag_min.z = prefs.getFloat("h.mag_min.z", 2000);
+
+        //Lets have smoothers for raw data so all variables are smoothed in sync;
+        // if smoother sync breaks then magnetic data does not fit heel/trim and it breaks the result
+        // We set smoother interval to be lower than compass refresh interval
+        // So we get not 50x10 but 50x50 = 2500 ms
+        HeelSmoother = cSmoother(DeviceConfig.heading_device_smoother_power, DeviceConfig.heading_device_smoother_interval);
+        TrimSmoother = cSmoother(DeviceConfig.heading_device_smoother_power, DeviceConfig.heading_device_smoother_interval);
+        XSmoother = cSmoother(DeviceConfig.heading_device_smoother_power, DeviceConfig.heading_device_smoother_interval);
+        YSmoother = cSmoother(DeviceConfig.heading_device_smoother_power, DeviceConfig.heading_device_smoother_interval);
+        ZSmoother = cSmoother(DeviceConfig.heading_device_smoother_power, DeviceConfig.heading_device_smoother_interval);
     }
 
 protected:
@@ -41,16 +51,7 @@ protected:
     unsigned long DeviceReadTimer;
     bool DeviceReinitMust = false;
     double _HeadingM = N2kDoubleNA;
-
-    //Lets have smoothers for raw data so all variables are smoothed in sync;
-    // if smoother sync breaks then magnetic data does not fit heel/trim and it breaks the result
-    // We set smoother intervat to be lower than compass refresh interval
-    // So we get not 50x10 but 50x50 = 2500 ms
-    cSmoother HeelSmoother = cSmoother(50, 10);
-    cSmoother TrimSmoother = cSmoother(50, 10);
-    cSmoother XSmoother = cSmoother(50, 10);
-    cSmoother YSmoother = cSmoother(50, 10);
-    cSmoother ZSmoother = cSmoother(50, 10);
+    cSmoother HeelSmoother, TrimSmoother, XSmoother, YSmoother, ZSmoother;
 
 private:
     bmm150_mag_data mag_min, mag_max;
@@ -186,7 +187,7 @@ protected:
             }
         }
         HeadingM = _HeadingM;
-        if (Gps->VariationValid()) {
+        if (Gps->VariationValid() && HeadingMValid()) {
             Variation = Gps->Variation;
             HeadingT = NormalizeDegree(HeadingM - Gps->Variation);
         }

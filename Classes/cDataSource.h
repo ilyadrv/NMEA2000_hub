@@ -1,4 +1,4 @@
-#include "cSmoother.h";
+#include "cSmoother.h"
 
 class cDataSource{
 

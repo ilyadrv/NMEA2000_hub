@@ -40,9 +40,8 @@ public:
 
         // INIT NMEA
         uint8_t chipid[6];
-        uint32_t id = 0;
-        esp_efuse_read_mac(chipid);
-        for (int i = 0; i < 6; i++) id += (chipid[i] << (7 * i));
+        esp_efuse_mac_get_default(chipid);
+        uint32_t id = chipid[0] + (chipid[1]<<8) + (chipid[2]<<16) + (chipid[3]<<24);
 
         // Set product information
         NMEA2000.SetProductInformation("ID00001", //Model serial

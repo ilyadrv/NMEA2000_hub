@@ -9,7 +9,7 @@
 #define M5STACK_MPU6886
 
 #include <M5Stack.h>
-#include <Time.h>
+#include <TimeLib.h>
 #include <sys/time.h>
 #include <stdlib.h>
 #include <NMEA2000_CAN.h>  // This will automatically choose right CAN library and create suitable NMEA2000 object
@@ -20,10 +20,6 @@
 #include <SD.h>
 #include <SPI.h>
 #include <Free_Fonts.h>
-
-#include <WiFi.h>
-#include <ESPmDNS.h>
-#include <WiFiClient.h>
 
 #include "AMeter/ammeter.cpp"
 #include "VMeter/voltmeter.cpp" //vmeter shares some ameter definitions, because ameter hardware has the  same vmeter chip inside
@@ -40,11 +36,7 @@
 #include "Classes/cLog.h"
 #include "States.h"
 
-#include "Web/DNSServer.cpp"
-#include "Web/Parsing.cpp"
-#include "Web/WebServer.cpp"
-#include "Web/detail/mimetable.cpp"
-
+#include "Web/MyWebServer.h"
 
 bool _logoShown = false;
 
@@ -230,11 +222,9 @@ void loop() {
     }
 
     if (!DeviceConfig.wifi_disabled){
-        dnsServer.processNextRequest();
+        webServer.dnsServer.processNextRequest();
         webServer.handleClient();
     }
 
     _pseudo_fps++;
 }
-
-
